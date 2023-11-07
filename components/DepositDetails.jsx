@@ -45,6 +45,7 @@ const GetDepositDetails = ({
   const [chains, setChains] = useState([]);
   const [supportedTokens, setSupportedTokens] = useState([]);
 
+
   useEffect(() => {
 
     setType(toAuthData?.accessToken?.brokerType);
@@ -52,7 +53,7 @@ const GetDepositDetails = ({
 
   useEffect(() => {
     const getSupportedTokensByType = () => {
-      const matchingIntegrations = networks.filter(
+      const matchingIntegrations = networks?.filter(
         (integration) => integration.type === 'robinhood'
       );
       let result = [];
@@ -67,13 +68,12 @@ const GetDepositDetails = ({
     };
 
     getSupportedTokensByType(type);
-  }, [toAuthData]); // include type and networks in the dependency array
-
+  }, [toAuthData]); 
   const getNetworkNamesBySymbol = (selectedSymbol) => {
     const supportedChains = new Set();
 
     networks.forEach((integration) => {
-      integration.networks.forEach((network) => {
+      integration?.networks?.forEach((network) => {
         if (network.supportedTokens.includes(selectedSymbol)) {
           const lowerCasedName =
             network.name.charAt(0).toLowerCase() + network.name.slice(1);
