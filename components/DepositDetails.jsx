@@ -28,7 +28,8 @@ import {
   Grid,
 } from '@mui/material';
 
-import { NetworksContext } from '../context/networksContexts';
+//import { NetworksContext } from '../context/networksContext'
+  import { IntegrationsContext } from 'context/integrationsContext';
 
 const GetDepositDetails = ({
   toAuthData,
@@ -40,39 +41,56 @@ const GetDepositDetails = ({
   setType,
   type,
 }) => {
-  const { networks } = useContext(NetworksContext);
+  // const { networks } = useContext(NetworksContext);
+  const { integrations, getIntegrations } = useContext(IntegrationsContext);
 
   const [chains, setChains] = useState([]);
   const [supportedTokens, setSupportedTokens] = useState([]);
 
 
   useEffect(() => {
-
-    setType(toAuthData?.accessToken?.brokerType);
-  }, [toAuthData]);
-
+    if (supportedTokens.length > 0) {
+      handleInputChange('symbol', supportedTokens[0]); // Set to the first supported token
+    }
+  }, [supportedTokens]);
+ 
   useEffect(() => {
-    const getSupportedTokensByType = () => {
-      const matchingIntegrations = networks?.filter(
-        (integration) => integration.type === 'robinhood'
-      );
-      let result = [];
+  setType(toAuthData?.accessToken?.brokerType);
+}, [toAuthData]);
 
-      matchingIntegrations.forEach((integration) => {
-        integration.networks.forEach((network) => {
-          result = [...result, ...network.supportedTokens];
-        });
+
+  
+  useEffect(() => {
+  const getSupportedTokensByType = () => {
+    console.log('Type:', type);
+    const matchingIntegrations = integrations?.filter(
+      (integration) => integration.type === type
+    );
+    console.log('Matching Integrations:', matchingIntegrations);
+    let result = [];
+
+    matchingIntegrations.forEach((integration) => {
+      integration.networks.forEach((network) => {
+        result = [...result, ...network.supportedTokens];
       });
-      const uniqueSupportedTokens = Array.from(new Set(result));
-      setSupportedTokens(uniqueSupportedTokens);
-    };
+    });
+    console.log('Supported Tokens:', result);
+    const uniqueSupportedTokens = Array.from(new Set(result));
+    setSupportedTokens(uniqueSupportedTokens);
+  };
 
-    getSupportedTokensByType(type);
-  }, [toAuthData]); 
+  getIntegrations();
+  if (integrations && integrations.length > 0) {
+    getSupportedTokensByType();
+  }
+}, [toAuthData, type]);
+
+
+
   const getNetworkNamesBySymbol = (selectedSymbol) => {
     const supportedChains = new Set();
 
-    networks.forEach((integration) => {
+    integrations.forEach((integration) => {
       integration?.networks?.forEach((network) => {
         if (network.supportedTokens.includes(selectedSymbol)) {
           const lowerCasedName =
@@ -91,6 +109,24 @@ const GetDepositDetails = ({
       getNetworkNamesBySymbol(symbol);
     }
   }, [symbol]);
+
+
+  const getChainsForSelectedSymbol = (selectedSymbol) => {
+  const availableChains = new Set();
+
+  integrations.forEach((integration) => {
+    integration?.networks?.forEach((network) => {
+      if (network.supportedTokens.includes(selectedSymbol)) {
+        const lowerCasedName =
+          network.name.charAt(0).toLowerCase() + network.name.slice(1);
+
+        availableChains.add(lowerCasedName);
+      }
+    });
+  });
+
+  return ['', ...availableChains];
+};
 
   return (
     <div>
@@ -119,42 +155,45 @@ const GetDepositDetails = ({
               />
             </FormControl>
             <FormControl fullWidth>
-              <Typography variant="h6">Symbol</Typography>
-              <Select
-                required
-                labelId="symbol-label"
-                id="symbol"
-                value={formValues.symbol}
-                label="Symbol"
-                onChange={(e) => handleInputChange('symbol', e.target.value)}
-              >
-                {supportedTokens.map((supportedTokens, index) => (
-                  <MenuItem key={index} value={supportedTokens}>
-                    {supportedTokens}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+  <Typography variant="h6">Symbol</Typography>
+  <Select
+    required
+    labelId="symbol-label"
+    id="symbol"
+    value={formValues.symbol}
+    label="Symbol"
+    onChange={(e) => handleInputChange('symbol', e.target.value)}
+  >
+    {supportedTokens.map((supportedToken, index) => (
+      <MenuItem key={index} value={supportedToken}>
+        {supportedToken}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
-            {chains.length ? (
-              <FormControl fullWidth>
-                <Typography variant="h6">Chain</Typography>
-                <Select
-                  required
-                  id="chain"
-                  value={chain.toLowerCase()}
-                  onChange={(e) => {
-                    setChain(e.target.value);
-                  }}
-                >
-                  {chains.map((chains, index) => (
-                    <MenuItem key={index} value={chains}>
-                      {chains}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : null}
+{chains.length ? (
+  <FormControl fullWidth>
+    <Typography variant="h6">Chain</Typography>
+    <Select
+      required
+      id="chain"
+      value={chain.toLowerCase()}
+      onChange={(e) => {
+        setChain(e.target.value);
+      }}
+    >
+      {getChainsForSelectedSymbol(formValues.symbol).map((chainOption, index) => (
+        <MenuItem key={index} value={chainOption}>
+          {chainOption}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+) : null}
+
+
+            
             <Grid container justifyContent="flex-end" mt={2}></Grid>
           </form>
         </CardContent>

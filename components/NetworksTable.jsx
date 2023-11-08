@@ -43,7 +43,7 @@ function NetworkDashboard({
       setPage(newPage);
     };
 
-    const currentPageNetworks = rows.slice(
+    const currentPageNetworks = rows?.slice(
       page * rowsPerPage,
       (page + 1) * rowsPerPage
     );
@@ -73,9 +73,9 @@ function NetworkDashboard({
                   <TableCell>{network.name}</TableCell>
                   <TableCell>{network.chainId}</TableCell>
                   <TableCell>
-                    {network?.supportedBrokerTypes.join(', ')}
+                    {network?.supportedBrokerTypes?.join(', ')}
                   </TableCell>{' '}
-                  <TableCell>{network.supportedTokens.join(', ')}</TableCell>
+                  <TableCell>{network?.supportedTokens?.join(', ')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

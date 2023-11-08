@@ -19,7 +19,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import CircularProgress from '@mui/material/CircularProgress';
-import { NetworksContext } from '../context/networksContexts';
+import { NetworksContext } from '../context/networksContext';
 import NetworkDashboard from './NetworksTable'; // Assuming you create a NetworkDashboard component
 import IntegrationsDashboard from './IntegrationsTable'; // Assuming you create a IntegrationsDashboard component
 import StatusDashboard from './ProviderStatus'; // Assuming you create a ProviderStatus componentimp

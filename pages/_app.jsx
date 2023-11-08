@@ -20,18 +20,21 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import TransferProvider from 'context/transferContext';
 import TransactionProvider from 'context/transactionContext';
-import NetworksProvider from 'context/networksContexts';
+import NetworksProvider from 'context/networksContext';
+import IntegrationsProvider from 'context/integrationsContext';
 
 // eslint-disable-next-line react/prop-types
 export default function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <NetworksProvider>
+        <IntegrationsProvider>
         <TransferProvider>
           <TransactionProvider>
             <Component {...pageProps} />
           </TransactionProvider>
         </TransferProvider>
+        </IntegrationsProvider>
       </NetworksProvider>
     </ThemeProvider>
   );
