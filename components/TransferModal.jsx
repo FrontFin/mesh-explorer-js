@@ -245,9 +245,9 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
   const [formValues, setFormValues] = useState({
     fromAuthToken: brokerAuthData?.accessToken?.accountTokens[0]?.accessToken,
     fromType: brokerAuthData?.accessToken?.brokerType,
-    toType: toAuthData?.accessToken?.brokerType,
+    toType: type,
     networkId: depositAddress?.networkId,
-    symbol: 'eth',
+    symbol,
     toAddress: depositAddress?.address,
     amount: 0.012,
     fiatCurrency: 'USD',

@@ -15,7 +15,7 @@
  */
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -28,18 +28,20 @@ import { TableFooter, TablePagination } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { PropTypes } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import { IntegrationsContext } from 'context/integrationsContext';
 
 function IntegrationsDashboard({ page, setPage }) {
-  const [integrations, setIntegrations] = useState([]);
   const [showIntegrationsTable, setShowIntegrationsTable] = useState(false);
   const [loadingIntegrations, setLoadingIntegrations] = useState(false);
+  const { getIntegrations, integrations } = useContext(IntegrationsContext)
 
   useEffect(() => {
     const fetchIntegrations = async () => {
       try {
         setLoadingIntegrations(true);
 
-        const response = await fetch('/api/integrations');
+          
+        const response = await getIntegrations()
 
         if (!response.ok) {
           throw new Error('Failed to fetch integrations');
