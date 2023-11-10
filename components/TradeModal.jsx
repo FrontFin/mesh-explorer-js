@@ -125,6 +125,7 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
       if (!getTradePreview.ok) {
         setLoadingPreviewDetails(false);
         const errorResponse = await getTradePreview.json();
+        console.log(errorResponse.details)
         alert(`Preview Failed: ${errorResponse.error}`);
         return;
       }

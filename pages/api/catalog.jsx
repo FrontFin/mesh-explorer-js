@@ -29,9 +29,19 @@ export default async function handler(req, res) {
     UserId: UserId,
   };
 
+  console.log(BrokerType)
+
   if (BrokerType !== 'deFiWallet') {
-    bodyObject.BrokerType = BrokerType;
-  }
+  bodyObject.BrokerType = BrokerType;
+  } else {
+        bodyObject.integrationId = '34aeb688-decb-485f-9d80-b66466783394';
+    console.log(bodyObject)
+
+}
+  
+ 
+
+
 
   if (transferOptions && Object.keys(transferOptions).length > 0) {
     bodyObject.transferOptions = transferOptions;

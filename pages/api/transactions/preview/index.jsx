@@ -33,22 +33,25 @@ export default async function handler(req, res) {
     },
   });
 
-  try {
-    const payload = {
+   const payload = {
       authToken: authToken,
       type: req.query.brokerType,
       symbol: req.query.symbol,
       paymentSymbol: req.query.paymentSymbol,
-      amountIsInPaymentSymbol: false,
-      amount: req.query.amount,
       isCryptoCurrency: true,
-      paymentIsCryptoCurrency: false,
+      amount: req.query.amount,
       orderType: req.query.orderType.slice(0, -4),
       timeInForce: req.query.timeInForce,
     };
 
+      console.log('!!!!' , payload)
+
+
+  try {
+   
+
     const tradePreview = await api.transactions.v1TransactionsPreviewCreate(
-      req.query.side,
+     req.query.side,
       payload
     );
 
@@ -58,12 +61,39 @@ export default async function handler(req, res) {
     ) {
       throw new Error(
         `Failed to fetch trade Preview: ${JSON.stringify(
-          tradePreview.data.content.errorMessage
+          tradePreview.data
         )}`
       );
     }
     return res.status(200).json(tradePreview.data.content);
   } catch (error) {
-    res.status(500).json({ error: `Something went wrong: ${error.message}` });
+    // Log the error details to the console for debugging
+
+    console.error('Error details:', {
+      message: error,
+      stack: error.stack,
+      response: error.response?.data || error.response, // If axios response is available
+      request: {
+        method: req.method,
+        query: req.query,
+        body: req.body,
+        headers: req.headers
+      }
+    });
+
+    // Respond with a detailed error message if possible
+    const clientErrorMessage = error.response?.data?.content?.errorMessage ||
+      error.response?.data?.message ||
+      error.message;
+
+    res.status(500).json({
+      error: `Something went wrong: ${clientErrorMessage}`,
+      details: {
+        method: req.method,
+        endpoint: req.url,
+        status: error.response?.status,
+        data: error.response?.data
+      }
+    });
   }
 }
