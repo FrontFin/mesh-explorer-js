@@ -41,7 +41,9 @@ export default async function handler(req, res) {
       isCryptoCurrency: true,
       amount: req.query.amount,
       orderType: req.query.orderType.slice(0, -4),
-      timeInForce: req.query.timeInForce,
+     timeInForce: req.query.timeInForce,
+      //price: "1"
+      
     };
 
       console.log('!!!!' , payload)

@@ -22,38 +22,39 @@ const GetDepositDetails = ({
   setSymbol,
   
 }) => {
-  const { integrations } = useContext(IntegrationsContext);
+  const { integrations, getIntegrations } = useContext(IntegrationsContext);
 
   const [chains, setChains] = useState([]);
   const [supportedTokens, setSupportedTokens] = useState([]);
 
   
 
-  console.log('toAuthData', toAuthData)
 
   useEffect(() => {
     const getSupportedTokensByBrokerType = () => {
-      const brokerType = toAuthData?.accessToken?.brokerType;
-      const matchingIntegrations = integrations.filter(
-        (integration) => integration.type === brokerType
-      );
-      
-      let tokens = [];
-      matchingIntegrations.forEach((integration) => {
-        integration.networks.forEach((network) => {
-          tokens = [...tokens, ...network.supportedTokens];
+        const brokerType = toAuthData?.accessToken?.brokerType;
+        const matchingIntegrations = integrations.filter(
+            (integration) => integration.type === brokerType
+        );
+        
+        let tokens = [];
+        matchingIntegrations.forEach((integration) => {
+            integration.networks.forEach((network) => {
+                tokens = [...tokens, ...network.supportedTokens];
+            });
         });
-      });
 
-      // Remove duplicates and sort
-      const uniqueSupportedTokens = Array.from(new Set(tokens)).sort();
-      setSupportedTokens(uniqueSupportedTokens);
+        const uniqueSupportedTokens = Array.from(new Set(tokens)).sort();
+        setSupportedTokens(uniqueSupportedTokens);
     };
 
-    if (toAuthData?.accessToken?.brokerType) {
-      getSupportedTokensByBrokerType();
+    if (!integrations || integrations.length === 0) {
+        getIntegrations();
+    } else if (toAuthData?.accessToken?.brokerType) {
+        getSupportedTokensByBrokerType();
     }
-  }, [toAuthData, integrations]);
+}, [toAuthData, integrations]);
+
 
   const updateChainsBasedOnSymbol = (selectedSymbol) => {
     const brokerType = toAuthData?.accessToken?.brokerType;
@@ -74,6 +75,7 @@ const GetDepositDetails = ({
   };
 
   useEffect(() => {
+    console.log('hit chains', formValues.symbol)
     if (formValues.symbol) {
       updateChainsBasedOnSymbol(formValues.symbol);
     }
