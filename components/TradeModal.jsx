@@ -122,6 +122,8 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
           method: 'POST',
         }
       );
+
+      console.log(getTradePreview.status, getTradePreview.ok)
       if (!getTradePreview.ok) {
         setLoadingPreviewDetails(false);
         const errorResponse = await getTradePreview.json();

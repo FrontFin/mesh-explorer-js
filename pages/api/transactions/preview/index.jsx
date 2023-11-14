@@ -33,6 +33,14 @@ export default async function handler(req, res) {
     },
   });
 
+  const getOrderType = (typeString) => {
+    if (typeString && typeString.endsWith('Type')) {
+        // Remove the last 4 characters ('Type')
+        return typeString.slice(0, -4);
+    }
+    return typeString; // Return the original string if it doesn't end with 'Type'
+};
+
    const payload = {
       authToken: authToken,
       type: req.query.brokerType,
@@ -40,7 +48,7 @@ export default async function handler(req, res) {
       paymentSymbol: req.query.paymentSymbol,
       isCryptoCurrency: true,
       amount: req.query.amount,
-      orderType: req.query.orderType.slice(0, -4),
+    orderType: getOrderType(req.query.orderType),
      timeInForce: req.query.timeInForce,
       //price: "1"
       
@@ -57,9 +65,11 @@ export default async function handler(req, res) {
       payload
     );
 
+      console.log(tradePreview.status, tradePreview.data.status)
+
     if (
       tradePreview.status !== 200 ||
-      tradePreview.data.status.content !== 'failed'
+      tradePreview.data.status !== 'ok'
     ) {
       throw new Error(
         `Failed to fetch trade Preview: ${JSON.stringify(
@@ -69,22 +79,8 @@ export default async function handler(req, res) {
     }
     return res.status(200).json(tradePreview.data.content);
   } catch (error) {
-    // Log the error details to the console for debugging
 
-    console.error('Error details:', {
-      message: error,
-      stack: error.stack,
-      response: error.response?.data || error.response, // If axios response is available
-      request: {
-        method: req.method,
-        query: req.query,
-        body: req.body,
-        headers: req.headers
-      }
-    });
-
-    // Respond with a detailed error message if possible
-    const clientErrorMessage = error.response?.data?.content?.errorMessage ||
+        const clientErrorMessage = error.response?.data?.content?.errorMessage ||
       error.response?.data?.message ||
       error.message;
 
