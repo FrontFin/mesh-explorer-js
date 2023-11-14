@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React, { useContext, useEffect, useState } from 'react';
 
 import Table from '@mui/material/Table';
@@ -31,17 +30,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { IntegrationsContext } from 'context/integrationsContext';
 
 function IntegrationsDashboard({ page, setPage }) {
-  const [showIntegrationsTable, setShowIntegrationsTable] = useState(false);
+  const [showIntegrationsTable, setShowIntegrationsTable] = useState(true);
   const [loadingIntegrations, setLoadingIntegrations] = useState(false);
-  const { getIntegrations, integrations } = useContext(IntegrationsContext)
+  const { getIntegrations, integrations } = useContext(IntegrationsContext);
 
   useEffect(() => {
     const fetchIntegrations = async () => {
       try {
         setLoadingIntegrations(true);
 
-          
-        const response = await getIntegrations()
+        const response = await getIntegrations();
 
         if (!response.ok) {
           throw new Error('Failed to fetch integrations');

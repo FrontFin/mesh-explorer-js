@@ -42,17 +42,20 @@ export default async function handler(req, res) {
 };
 
    const payload = {
-      authToken: authToken,
-      type: req.query.brokerType,
-      symbol: req.query.symbol,
-      paymentSymbol: req.query.paymentSymbol,
-      isCryptoCurrency: true,
-      amount: req.query.amount,
+    authToken: authToken,
+    type: req.query.brokerType,
+    symbol: req.query.symbol,
+    paymentSymbol: req.query.paymentSymbol,
+    isCryptoCurrency: true,
+    amount: parseFloat(req.query.amount),
     orderType: getOrderType(req.query.orderType),
-     timeInForce: req.query.timeInForce,
-      //price: "1"
-      
-    };
+    timeInForce: req.query.timeInForce,
+};
+
+if (req.query.price && req.query.price.trim() !== '') {
+    payload.price = parseFloat(req.query.price);
+}
+
 
       console.log('!!!!' , payload)
 

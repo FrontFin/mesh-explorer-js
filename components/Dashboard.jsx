@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React, { useState, useEffect, useContext } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -64,6 +63,15 @@ function Dashboard() {
     switch (tab) {
       case 0:
         return (
+          <IntegrationsDashboard
+            tab={tab}
+            networks={networks}
+            page={page}
+            setPage={setPage}
+          />
+        );
+      case 1:
+        return (
           <NetworkDashboard
             tab={tab}
             showTable={showTable}
@@ -74,15 +82,7 @@ function Dashboard() {
             setPage={setPage}
           />
         );
-      case 1:
-        return (
-          <IntegrationsDashboard
-            tab={tab}
-            networks={networks}
-            page={page}
-            setPage={setPage}
-          />
-        );
+
       case 2:
         return (
           <StatusDashboard
@@ -100,8 +100,8 @@ function Dashboard() {
   return (
     <div>
       <Tabs value={tab} onChange={handleTabChange}>
-        <Tab label="Supported Networks" />
         <Tab label="Integrations" />
+        <Tab label="Supported Networks" />
         <Tab label="Provider Status" />
       </Tabs>
       {renderTabContent()}

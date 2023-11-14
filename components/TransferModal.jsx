@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React, { useState, useEffect } from 'react';
 import {
   DialogContent,
@@ -403,10 +402,6 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
       toAddress: depositAddress?.address,
     }));
   }, [depositAddress]);
-
-  console.log("Current symbol in Step1: ", symbol);
-
-
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>

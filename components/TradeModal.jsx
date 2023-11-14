@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React, { useState, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -123,11 +122,11 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
         }
       );
 
-      console.log(getTradePreview.status, getTradePreview.ok)
+      console.log(getTradePreview.status, getTradePreview.ok);
       if (!getTradePreview.ok) {
         setLoadingPreviewDetails(false);
         const errorResponse = await getTradePreview.json();
-        console.log(errorResponse.details)
+        console.log(errorResponse.details);
         alert(`Preview Failed: ${errorResponse.error}`);
         return;
       }

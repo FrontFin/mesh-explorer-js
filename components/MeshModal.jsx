@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React, { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import PropTypes from 'prop-types';

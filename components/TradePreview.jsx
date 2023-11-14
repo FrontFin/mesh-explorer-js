@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React from 'react';
 
 import {
@@ -57,17 +56,15 @@ const TradePreviewModal = ({
         }
       );
 
-
       if (!executeTrade.ok) {
         setLoadingExecution(false);
         setTradeStage(1);
         const errorResponse = await executeTrade.json();
-        console.log(errorResponse)
+        console.log(errorResponse);
         alert(`Trade Failed: ${errorResponse.error}`);
         return;
       }
       const response = await executeTrade.json();
-            console.log(response)
 
       await setTradeResponse(response);
       setTradeStage(3);

@@ -20,41 +20,32 @@ const GetDepositDetails = ({
   chain,
   formValues,
   setSymbol,
-  
 }) => {
-  const { integrations, getIntegrations } = useContext(IntegrationsContext);
+  const { integrations } = useContext(IntegrationsContext);
 
   const [chains, setChains] = useState([]);
   const [supportedTokens, setSupportedTokens] = useState([]);
 
-  
-
-
   useEffect(() => {
     const getSupportedTokensByBrokerType = () => {
-        const brokerType = toAuthData?.accessToken?.brokerType;
-        const matchingIntegrations = integrations.filter(
-            (integration) => integration.type === brokerType
-        );
-        
-        let tokens = [];
-        matchingIntegrations.forEach((integration) => {
-            integration.networks.forEach((network) => {
-                tokens = [...tokens, ...network.supportedTokens];
-            });
-        });
+      const brokerType = toAuthData?.accessToken?.brokerType;
+      const matchingIntegrations = integrations.filter(
+        (integration) => integration.type === brokerType
+      );
 
-        const uniqueSupportedTokens = Array.from(new Set(tokens)).sort();
-        setSupportedTokens(uniqueSupportedTokens);
+      let tokens = [];
+      matchingIntegrations.forEach((integration) => {
+        integration.networks.forEach((network) => {
+          tokens = [...tokens, ...network.supportedTokens];
+        });
+      });
+
+      const uniqueSupportedTokens = Array.from(new Set(tokens)).sort();
+      setSupportedTokens(uniqueSupportedTokens);
     };
 
-    if (!integrations || integrations.length === 0) {
-        getIntegrations();
-    } else if (toAuthData?.accessToken?.brokerType) {
-        getSupportedTokensByBrokerType();
-    }
-}, [toAuthData, integrations]);
-
+    getSupportedTokensByBrokerType();
+  }, [toAuthData, integrations]);
 
   const updateChainsBasedOnSymbol = (selectedSymbol) => {
     const brokerType = toAuthData?.accessToken?.brokerType;
@@ -75,40 +66,38 @@ const GetDepositDetails = ({
   };
 
   useEffect(() => {
-    console.log('hit chains', formValues.symbol)
+    console.log('hit chains', formValues.symbol);
     if (formValues.symbol) {
       updateChainsBasedOnSymbol(formValues.symbol);
     }
   }, [formValues.symbol, integrations, toAuthData]);
 
-
   const getNetworkNamesBySymbol = (selectedSymbol) => {
-  const brokerType = toAuthData?.accessToken?.brokerType; // Get the broker type from toAuthData
-  const supportedChains = new Set();
+    const brokerType = toAuthData?.accessToken?.brokerType; // Get the broker type from toAuthData
+    const supportedChains = new Set();
 
-  // Filter integrations first by brokerType
-  const relevantIntegrations = integrations.filter(
-    (integration) => integration.type === brokerType
-  );
+    // Filter integrations first by brokerType
+    const relevantIntegrations = integrations.filter(
+      (integration) => integration.type === brokerType
+    );
 
-  // Now filter the networks within those integrations for the selected symbol
-  relevantIntegrations.forEach((integration) => {
-    integration.networks.forEach((network) => {
-      if (network.supportedTokens.includes(selectedSymbol)) {
-        supportedChains.add(network.name); // Use the actual network name, not lowercased
-      }
+    // Now filter the networks within those integrations for the selected symbol
+    relevantIntegrations.forEach((integration) => {
+      integration.networks.forEach((network) => {
+        if (network.supportedTokens.includes(selectedSymbol)) {
+          supportedChains.add(network.name); // Use the actual network name, not lowercased
+        }
+      });
     });
-  });
 
-  setChains([...supportedChains]);
-};
-
+    setChains([...supportedChains]);
+  };
 
   useEffect(() => {
     if (symbol) {
       getNetworkNamesBySymbol(symbol);
     }
-}, [symbol, integrations, toAuthData]); // Add toAuthData as a dependency
+  }, [symbol, integrations, toAuthData]); // Add toAuthData as a dependency
 
   return (
     <div>
@@ -157,22 +146,20 @@ const GetDepositDetails = ({
             {chains.length ? (
               <FormControl fullWidth>
                 <Typography variant="h6">Chain</Typography>
-               <Select
+                <Select
                   required
                   id="chain"
                   value={chain}
-                onChange={(e) => {
-                  setChain(e.target.value);
-  }}
->
-  {chains.map((chainName, index) => (
-    <MenuItem key={index} value={chainName}>
-      {chainName}
-    </MenuItem>
-  ))}
-</Select>
-
-
+                  onChange={(e) => {
+                    setChain(e.target.value);
+                  }}
+                >
+                  {chains.map((chainName, index) => (
+                    <MenuItem key={index} value={chainName}>
+                      {chainName}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
             ) : null}
             <Grid container justifyContent="flex-end" mt={2}></Grid>
