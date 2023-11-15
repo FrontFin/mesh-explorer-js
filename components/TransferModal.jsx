@@ -375,11 +375,10 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
 
       const response = await executeTransfer.json();
 
-      if (!response.ok) {
+      if (!executeTransfer.ok) {
         setErrorMessage(response.details.message);
         alert(errorMessage);
       }
-
       if (response.content.status === 'mfaRequired') {
         setShowMFAForm(true);
       } else {
