@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React, { useState, useEffect } from 'react';
 import { getCatalogLink } from 'utils/getCatalogLink';
 import { PropTypes } from '@mui/material';
@@ -38,6 +37,25 @@ const ChooseProvider = ({
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [providerType, setProviderType] = useState('CEX');
+  const [defiIntegrations, setDefiIntegrations] = useState([]);
+  const [integrationId, setIntegrationId] = useState('');
+  const [selectedWallet, setSelectedWallet] = useState('Core');
+
+  useEffect(() => {
+    const fetchDefiIntegrations = async () => {
+      const defiWallets = await fetch(`/api/status`);
+      const response = await defiWallets.json();
+      const wallet = response.content
+        .filter((item) => item.deFiWalletData)
+        .sort((a, b) => a.name.localeCompare(b.name)); // Sorting step
+
+      setDefiIntegrations(wallet);
+    };
+    if (providerType === 'Wallet') {
+      fetchDefiIntegrations();
+    }
+  }, [providerType]);
+
   useEffect(() => {
     const fetchNetworks = async () => {
       try {
@@ -70,6 +88,17 @@ const ChooseProvider = ({
 
   const handleExchangeType = (value) => {
     setBrokerType(value);
+    setIntegrationId('');
+  };
+
+  const handleDefiWallet = (selectedValue) => {
+    setSelectedWallet(selectedValue);
+    setBrokerType('deFiWallet');
+
+    const selectedIntegration = defiIntegrations.find(
+      (integration) => integration.name === selectedValue
+    );
+    setIntegrationId(selectedIntegration.deFiWalletData.id);
   };
 
   const handleClick = async () => {
@@ -79,7 +108,8 @@ const ChooseProvider = ({
       setCatalogLink,
       setOpenMeshModal,
       setErrorMessage,
-      null
+      null,
+      integrationId
     );
     setLoading(false);
   };
@@ -113,11 +143,19 @@ const ChooseProvider = ({
                   onChange={(e) => handleExchangeType(e.target.value)}
                   style={{ width: '200px' }}
                 >
-                  {integrations.map((integration) => (
-                    <MenuItem key={integration.type} value={integration.type}>
-                      {integration.type}
-                    </MenuItem>
-                  ))}
+                  {integrations.map((integration) => {
+                    if (integration.type !== 'deFiWallet') {
+                      return (
+                        <MenuItem
+                          key={integration.type}
+                          value={integration.type}
+                        >
+                          {integration.type}
+                        </MenuItem>
+                      );
+                    }
+                    return null;
+                  })}
                 </Select>
               </Box>
             </FormControl>
@@ -127,11 +165,18 @@ const ChooseProvider = ({
               <Box pb={2}>
                 <InputLabel>Choose Wallet Provider</InputLabel>
                 <Select
-                  value={brokerType}
-                  onChange={(e) => setBrokerType(e.target.value)}
+                  value={selectedWallet}
+                  onChange={(e) => handleDefiWallet(e.target.value)}
                   style={{ width: '200px' }}
                 >
-                  <MenuItem value="deFiWallet">deFiWallet</MenuItem>
+                  {defiIntegrations.map((integration) => (
+                    <MenuItem
+                      key={integration.deFiWalletData.name}
+                      value={integration.name}
+                    >
+                      {integration.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </Box>
             </FormControl>
@@ -140,7 +185,7 @@ const ChooseProvider = ({
           <Button variant="contained" color="secondary" onClick={handleClick}>
             Connect to Mesh
           </Button>
-         
+
           {errorMessage ? <p>{errorMessage}</p> : null}
         </form>
       ) : (

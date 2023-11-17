@@ -32,7 +32,8 @@ import { IntegrationsContext } from 'context/integrationsContext';
 function IntegrationsDashboard({ page, setPage }) {
   const [showIntegrationsTable, setShowIntegrationsTable] = useState(true);
   const [loadingIntegrations, setLoadingIntegrations] = useState(false);
-  const { getIntegrations, integrations } = useContext(IntegrationsContext);
+  const { getIntegrations, integrations, setIntegrations } =
+    useContext(IntegrationsContext);
 
   useEffect(() => {
     const fetchIntegrations = async () => {
@@ -40,13 +41,13 @@ function IntegrationsDashboard({ page, setPage }) {
         setLoadingIntegrations(true);
 
         const response = await getIntegrations();
+        const data = await response.json();
 
         if (!response.ok) {
           throw new Error('Failed to fetch integrations');
         }
 
-        const data = await response.json();
-
+        console.log('data', data.content.integrations);
         setIntegrations(data.content.integrations);
       } catch (error) {
         console.log('error', error);

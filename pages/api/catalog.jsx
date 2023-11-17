@@ -18,7 +18,7 @@
 import { FrontApi } from '@front-finance/api';
 export default async function handler(req, res) {
   const { PROD_API_KEY, MESH_API_URL, CLIENT_ID } = process.env;
-  const { symbol, BrokerType, UserId } = req.query;
+  const { symbol, BrokerType, UserId, integrationId } = req.query;
   const { transferOptions, amountInFiat } = req.body;
 
   if (req.method !== 'POST') {
@@ -29,20 +29,14 @@ export default async function handler(req, res) {
     UserId: UserId,
   };
 
-  console.log(BrokerType)
 
-  if (BrokerType !== 'deFiWallet') {
+  if (BrokerType) {
   bodyObject.BrokerType = BrokerType;
   } else {
-        bodyObject.integrationId = '34aeb688-decb-485f-9d80-b66466783394';
-    console.log(bodyObject)
+        bodyObject.integrationId = integrationId;
 
 }
   
- 
-
-
-
   if (transferOptions && Object.keys(transferOptions).length > 0) {
     bodyObject.transferOptions = transferOptions;
   }

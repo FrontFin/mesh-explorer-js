@@ -21,7 +21,8 @@ export const getCatalogLink = async (
   setCatalogLink = () => {},
   setOpenMeshModal = () => {},
   setErrorMessage = () => {},
-  payload = null
+  payload = null,
+  integrationId = null
 ) => {
   const UserId = getUserId(brokerType);
 
@@ -36,10 +37,18 @@ export const getCatalogLink = async (
   }
 
   try {
-    const link = await fetch(
-      `/api/catalog?UserId=${UserId}&BrokerType=${brokerType}`,
-      fetchOptions
-    );
+    let link;
+    if (integrationId) {
+       link = await fetch(
+        `/api/catalog?UserId=${UserId}&integrationId=${integrationId}`,
+        fetchOptions
+      );
+    } else {
+       link = await fetch(
+        `/api/catalog?UserId=${UserId}&BrokerType=${brokerType}`,
+        fetchOptions
+      )
+    };
 
     const response = await link.json();
     if (response) {
