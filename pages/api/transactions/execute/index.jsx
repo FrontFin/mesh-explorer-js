@@ -41,6 +41,7 @@ export default async function handler(req, res) {
       paymentSymbol: req.query.paymentSymbol,
       amountIsInPaymentSymbol: false,
       amount: req.query.amount,
+      price: req.query.price,
       isCryptoCurrency: true,
       paymentIsCryptoCurrency: false,
       orderType: req.query.orderType.slice(0, -4),

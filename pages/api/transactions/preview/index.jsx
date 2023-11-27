@@ -35,10 +35,9 @@ export default async function handler(req, res) {
 
   const getOrderType = (typeString) => {
     if (typeString && typeString.endsWith('Type')) {
-        // Remove the last 4 characters ('Type')
         return typeString.slice(0, -4);
     }
-    return typeString; // Return the original string if it doesn't end with 'Type'
+    return typeString;
 };
 
    const payload = {
@@ -50,14 +49,12 @@ export default async function handler(req, res) {
     amount: parseFloat(req.query.amount),
     orderType: getOrderType(req.query.orderType),
     timeInForce: req.query.timeInForce,
+    price: req.query.price
 };
 
 if (req.query.price && req.query.price.trim() !== '') {
     payload.price = parseFloat(req.query.price);
 }
-
-
-      console.log('!!!!' , payload)
 
 
   try {

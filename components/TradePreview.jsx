@@ -35,6 +35,7 @@ const TradePreviewModal = ({
   side,
   orderType,
   amount,
+  price,
   timeInForce,
   paymentSymbol,
   setTradeStage,
@@ -46,7 +47,7 @@ const TradePreviewModal = ({
     setLoadingExecution(true);
     try {
       const executeTrade = await fetch(
-        `/api/transactions/execute?side=${side}&paymentSymbol=${paymentSymbol}&symbol=${symbol}&orderType=${orderType}&timeInForce=${timeInForce}&amount=${amount}&brokerType=${brokerType}`,
+        `/api/transactions/execute?side=${side}&paymentSymbol=${paymentSymbol}&symbol=${symbol}&orderType=${orderType}&timeInForce=${timeInForce}&amount=${amount}&brokerType=${brokerType}&price=${price}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -133,6 +134,17 @@ const TradePreviewModal = ({
                   />
                 </FormControl>
                 <FormControl fullWidth>
+                  <Typography variant="h6">Price</Typography>
+                  <TextField
+                    required
+                    disabled
+                    id="price"
+                    value={price}
+                    label="Price"
+                    helperText="Price of the unit, used for Limit and StopLoss orders."
+                  />
+                </FormControl>
+                <FormControl fullWidth>
                   <Typography variant="h6">Amount</Typography>
                   <TextField
                     required
@@ -189,6 +201,7 @@ TradePreviewModal.propTypes = {
   symbol: PropTypes.string.isRequired,
   side: PropTypes.string.isRequired,
   orderType: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
   amount: PropTypes.string.isRequired,
   timeInForce: PropTypes.string.isRequired,
   paymentSymbol: PropTypes.string.isRequired,

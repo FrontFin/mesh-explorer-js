@@ -49,6 +49,7 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
   const [tradeStage, setTradeStage] = useState(1);
   const [loadingExecution, setLoadingExecution] = useState(false);
   const [tradeResponse, setTradeResponse] = useState({});
+  const [price, setPrice] = useState(1);
 
   useEffect(() => {
     setLoadingBrokerDetails(true);
@@ -112,7 +113,7 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
     setLoadingPreviewDetails(true);
     try {
       const getTradePreview = await fetch(
-        `/api/transactions/preview?brokerType=${brokerType}&side=${side}&paymentSymbol=${paymentSymbol}&symbol=${symbol}&orderType=${orderType}&timeInForce=${timeInForce}&amount=${amount}`,
+        `/api/transactions/preview?brokerType=${brokerType}&side=${side}&paymentSymbol=${paymentSymbol}&symbol=${symbol}&orderType=${orderType}&timeInForce=${timeInForce}&amount=${amount}&price=${price}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -122,7 +123,6 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
         }
       );
 
-      console.log(getTradePreview.status, getTradePreview.ok);
       if (!getTradePreview.ok) {
         setLoadingPreviewDetails(false);
         const errorResponse = await getTradePreview.json();
@@ -148,7 +148,7 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
       {tradeStage === 1 ? (
         <>
           <DialogTitle id="transfer-details-dialog-title">
-            Trade Form{' '}
+            Trade Form
           </DialogTitle>
 
           <DialogContent>
@@ -218,6 +218,20 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
                           <MenuItem value="sell">Sell</MenuItem>
                         </Select>
                       </FormControl>
+                      {orderType === 'limitType' && (
+                        <FormControl fullWidth>
+                          <Typography variant="h6">Price</Typography>
+                          <TextField
+                            required
+                            id="price"
+                            value={price}
+                            label="Price"
+                            helperText="Price of the unit, used for Limit and StopLoss orders."
+                            onChange={(e) => setPrice(e.target.value)}
+                          />
+                        </FormControl>
+                      )}
+
                       <FormControl fullWidth>
                         <Typography variant="h6">Amount</Typography>
                         <TextField
@@ -283,6 +297,7 @@ const TradeModal = ({ open, onClose, brokerType, authToken, buyingPower }) => {
           side={side}
           orderType={orderType}
           amount={amount}
+          price={price}
           timeInForce={timeInForce}
           setTradeStage={setTradeStage}
           tradeStage={tradeStage}
