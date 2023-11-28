@@ -51,14 +51,14 @@ const TransactionDetailsModal = ({ open, onClose, brokerType, authToken }) => {
     const millisecondsInADay = 24 * 60 * 60 * 1000;
     const currentTimestampMilliseconds = Date.now();
     const date30DaysBackMilliseconds =
-      currentTimestampMilliseconds - 30 * millisecondsInADay;
+      currentTimestampMilliseconds - 1 * millisecondsInADay;
     const date30DaysBackTimestamp = Math.floor(
       date30DaysBackMilliseconds / 1000
     );
     const payload = {
       authToken: authToken,
       type: brokerType,
-      count: 10,
+      count: 30,
       from: date30DaysBackTimestamp,
     };
 
