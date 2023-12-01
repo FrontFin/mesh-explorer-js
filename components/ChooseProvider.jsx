@@ -16,7 +16,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { getCatalogLink } from 'utils/getCatalogLink';
-import { PropTypes } from '@mui/material';
+import PropTypes from 'prop-types';
 
 import {
   Button,
@@ -109,7 +109,8 @@ const ChooseProvider = ({
       setOpenMeshModal,
       setErrorMessage,
       null,
-      integrationId
+      integrationId,
+      providerType
     );
     setLoading(false);
   };
@@ -130,6 +131,7 @@ const ChooseProvider = ({
               >
                 <MenuItem value="CEX">CEX</MenuItem>
                 <MenuItem value="Wallet">Wallet</MenuItem>
+                <MenuItem value="Full Catalogue">Full Catalogue</MenuItem>
               </Select>
             </Box>
           </FormControl>
