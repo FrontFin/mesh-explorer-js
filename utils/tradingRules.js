@@ -14,75 +14,78 @@
  * limitations under the License.
  */
 
-
-
 export const tradingAllowed = (brokerType, tradingType) => {
-    switch (brokerType) {
-        case 'coinbase':
-            if (tradingType === 'crypto') {
-                return true
-            } else {
-               return false
-        
-            };
-    
-        case 'binanceInternationalDirect':
-             if (tradingType === 'crypto') {
-                return true
-            } else {
-               return false
-        
-            };
+  switch (brokerType) {
+    case 'coinbase':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return false;
+      }
 
-        case 'robinhood':
-            if (tradingType === 'crypto') {
-                return true
-            } else {
-               return true
-        
-            };
-        case 'binance':
-            if (tradingType === 'crypto') {
-                return true
-            } else {
-               return false
-        
-            };
-        case 'alpaca':
-             if (tradingType === 'crypto') {
-                return true
-            } else {
-               return false
-        
-            };
-        case 'public':
-             if (tradingType === 'crypto') {
-                return true
-            } else {
-               return false
-        
-            };
-        case 'etoro':
-             if (tradingType === 'crypto') {
-                return true
-            } else {
-               return false
-        
-            };
-        case 'alpaca':
-            if (tradingType === 'crypto') {
-                return true
-            } else {
-               return false
-        
-            };
-        default:
-            if (tradingType === 'crypto') {
-                return false
-            }
-            else {
-               return false
-        
-            };
-    }
+    case 'binanceInternationalDirect':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return false;
+      }
+
+    case 'robinhood':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return true;
+      }
+    case 'binance':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return false;
+      }
+    case 'alpaca':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return false;
+      }
+    case 'public':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return true;
+      }
+    case 'etoro':
+      if (tradingType === 'crypto') {
+        return false;
+      } else {
+        return false;
+      }
+    case 'webull':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return true;
+      }
+
+    case 'vanguard':
+      if (tradingType === 'crypto') {
+        return false;
+      } else {
+        return true;
+      }
+
+    case 'InteractiveBrokers' || 'interactiveBrokers':
+      if (tradingType === 'crypto') {
+        return false;
+      } else {
+        return false;
+      }
+
+    default:
+      if (tradingType === 'crypto') {
+        return false;
+      } else {
+        return false;
+      }
+  }
 };

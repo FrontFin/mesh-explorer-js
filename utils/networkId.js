@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 export const findNetworkId = (data, targetType, targetName) => {
   for (const item of data) {
     if (item.type?.toLowerCase() === targetType?.toLowerCase()) {
@@ -25,5 +24,5 @@ export const findNetworkId = (data, targetType, targetName) => {
       }
     }
   }
-  return null; 
+  return null;
 };

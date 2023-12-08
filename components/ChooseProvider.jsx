@@ -99,6 +99,7 @@ const ChooseProvider = ({
       (integration) => integration.name === selectedValue
     );
     setIntegrationId(selectedIntegration.deFiWalletData.id);
+    console.log('integration Id, ', integrationId);
   };
 
   const handleClick = async () => {
@@ -110,7 +111,8 @@ const ChooseProvider = ({
       setErrorMessage,
       null,
       integrationId,
-      providerType
+      providerType,
+      'authorization'
     );
     setLoading(false);
   };
