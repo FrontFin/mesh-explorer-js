@@ -3,6 +3,10 @@ export const handleExit = (setOpenMeshModal = () => {}) => {
   setOpenMeshModal(false);
 };
 
-export const handleTransferFinished = () => {
-  alert('Transfer Success!');
+// export const handleTransferFinished = () => {
+//   alert('Transfer Success!');
+// };
+
+export const handleSuccess = () => {
+  console.log('success connecting');
 };

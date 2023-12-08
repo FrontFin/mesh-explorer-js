@@ -199,32 +199,16 @@ const Step4 = ({
   openMeshModal,
   brokerAuthData,
   catalogLink,
-  handleTransferFinished,
   handleExit,
 }) => (
-  <div>
-    <h2>Mesh Transfer flow</h2>
-
-    <MeshModal
-      open={openMeshModal}
-      onClose={() => setOpenMeshModal(false)}
-      link={catalogLink}
-      onSuccess={handleTransferFinished}
-      onExit={handleExit}
-      authData={brokerAuthData}
-    />
-
-    {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 2 }}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleExecuteTransfer}
-        disabled={loading}
-      >
-        {loading ? 'Loading...' : 'Execute Transfer'}
-      </Button>
-    </Box> */}
-  </div>
+  <MeshModal
+    open={openMeshModal}
+    onClose={() => setOpenMeshModal(false)}
+    onSuccess={() => console.log('connected')}
+    link={catalogLink}
+    onExit={handleExit}
+    authData={brokerAuthData}
+  />
 );
 
 Step1.propTypes = {
@@ -489,107 +473,110 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
   }, [depositAddress, amount]);
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-        }}
-      >
-        <IconButton
-          edge="end"
-          color="inherit"
-          onClick={onClose}
-          aria-label="close"
+    <>
+      <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+        <DialogTitle
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
         >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        {activeStep === 1 && (
-          <Step1
-            brokerAuthData={brokerAuthData}
-            existingAuthData={existingAuthData}
-            onStepChange={() => handleStepChange(2)}
-            setDepositAddress={setDepositAddress}
-            handleGetDepositAddress={handleGetDepositAddress}
-            handleInputChange={handleInputChange}
-            setToAuthData={setToAuthData}
-            loading={loading}
-            toAuthData={toAuthData}
-            formValues={formValues}
-            symbol={symbol}
-            setSymbol={setSymbol}
-            chain={chain}
-            setChain={setChain}
-            setType={setType}
-            catalogLink={catalogLink}
-            setCatalogLink={setCatalogLink}
-          />
-        )}
-        {activeStep === 2 && (
-          <Step2
-            brokerAuthData={brokerAuthData}
-            depositAddress={depositAddress}
-            toAuthData={toAuthData}
-            onStepChange={() => handleStepChange(3)}
-            setTransferDetails={setTransferDetails}
-            handleExecutePreview={handleExecutePreview}
-            formValues={formValues}
-            handleInputChange={handleInputChange}
-            loading={loading}
-            errorMessage={errorMessage}
-            type={type}
-            amount={amount}
-            setAmount={setAmount}
-            symbol={symbol}
-          />
-        )}
-        {activeStep === 3 && (
-          <Step3
-            brokerAuthData={brokerAuthData}
-            depositAddress={depositAddress}
-            toAuthData={toAuthData}
-            transferDetails={transferDetails}
-            handleExecuteTransfer={handleExecuteTransfer}
-            formValues={formValues}
-            loading={loading}
-            errorMessage={errorMessage}
-            setMfaCode={setMfaCode}
-            mfaCode={mfaCode}
-            mfaRequired={showMFAForm}
-          />
-        )}
-        {activeStep === 4 && (
-          <Step4
-            brokerAuthData={brokerAuthData}
-            existingAuthData={existingAuthData}
-            onStepChange={() => handleStepChange(2)}
-            setDepositAddress={setDepositAddress}
-            handleGetDepositAddress={handleGetDepositAddress}
-            handleInputChange={handleInputChange}
-            setToAuthData={setToAuthData}
-            setErrorMessage={setErrorMessage}
-            loading={loading}
-            toAuthData={toAuthData}
-            formValues={formValues}
-            symbol={symbol}
-            setSymbol={setSymbol}
-            chain={chain}
-            setChain={setChain}
-            setType={setType}
-            openMeshModal={openMeshModal}
-            setOpenMeshModal={setOpenMeshModal}
-            catalogLink={catalogLink}
-            setCatalogLink={setCatalogLink}
-            handleTransferFinished={handleTransferFinished}
-            handleExit={handleExit}
-          />
-        )}
-        {!validAddress && <p> Please enter a valid address</p>}
-      </DialogContent>
-    </Dialog>
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={onClose}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {activeStep === 1 && (
+            <Step1
+              brokerAuthData={brokerAuthData}
+              existingAuthData={existingAuthData}
+              onStepChange={() => handleStepChange(2)}
+              setDepositAddress={setDepositAddress}
+              handleGetDepositAddress={handleGetDepositAddress}
+              handleInputChange={handleInputChange}
+              setToAuthData={setToAuthData}
+              loading={loading}
+              toAuthData={toAuthData}
+              formValues={formValues}
+              symbol={symbol}
+              setSymbol={setSymbol}
+              chain={chain}
+              setChain={setChain}
+              setType={setType}
+              catalogLink={catalogLink}
+              setCatalogLink={setCatalogLink}
+            />
+          )}
+          {activeStep === 2 && (
+            <Step2
+              brokerAuthData={brokerAuthData}
+              depositAddress={depositAddress}
+              toAuthData={toAuthData}
+              onStepChange={() => handleStepChange(3)}
+              setTransferDetails={setTransferDetails}
+              handleExecutePreview={handleExecutePreview}
+              formValues={formValues}
+              handleInputChange={handleInputChange}
+              loading={loading}
+              errorMessage={errorMessage}
+              type={type}
+              amount={amount}
+              setAmount={setAmount}
+              symbol={symbol}
+            />
+          )}
+          {activeStep === 3 && (
+            <Step3
+              brokerAuthData={brokerAuthData}
+              depositAddress={depositAddress}
+              toAuthData={toAuthData}
+              transferDetails={transferDetails}
+              handleExecuteTransfer={handleExecuteTransfer}
+              formValues={formValues}
+              loading={loading}
+              errorMessage={errorMessage}
+              setMfaCode={setMfaCode}
+              mfaCode={mfaCode}
+              mfaRequired={showMFAForm}
+            />
+          )}
+
+          {!validAddress && <p> Please enter a valid address</p>}
+        </DialogContent>
+      </Dialog>
+      {activeStep === 4 && (
+        <Step4
+          brokerAuthData={brokerAuthData}
+          existingAuthData={existingAuthData}
+          onStepChange={() => handleStepChange(2)}
+          setDepositAddress={setDepositAddress}
+          handleGetDepositAddress={handleGetDepositAddress}
+          handleInputChange={handleInputChange}
+          setToAuthData={setToAuthData}
+          setErrorMessage={setErrorMessage}
+          loading={loading}
+          toAuthData={toAuthData}
+          formValues={formValues}
+          symbol={symbol}
+          setSymbol={setSymbol}
+          chain={chain}
+          setChain={setChain}
+          setType={setType}
+          openMeshModal={openMeshModal}
+          setOpenMeshModal={setOpenMeshModal}
+          catalogLink={catalogLink}
+          setCatalogLink={setCatalogLink}
+          handleTransferFinished={handleTransferFinished}
+          handleExit={handleExit}
+        />
+      )}
+    </>
   );
 };
 
