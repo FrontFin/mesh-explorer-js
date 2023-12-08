@@ -277,7 +277,7 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
   const [mfaCode, setMfaCode] = useState('');
   const [validAddress, setValidAddress] = useState(true);
   const [symbol, setSymbol] = useState('ETH');
-  const [amount, setAmount] = useState(0.012);
+  const [amount, setAmount] = useState(null);
   const [chain, setChain] = useState('');
   const [type, setType] = useState(
     toAuthData?.accessToken?.brokerType || 'coinbase'
