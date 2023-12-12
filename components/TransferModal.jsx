@@ -277,7 +277,7 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
   const [mfaCode, setMfaCode] = useState('');
   const [validAddress, setValidAddress] = useState(true);
   const [symbol, setSymbol] = useState('ETH');
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState(0.012);
   const [chain, setChain] = useState('');
   const [type, setType] = useState(
     toAuthData?.accessToken?.brokerType || 'coinbase'
@@ -369,11 +369,10 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
                   networkId: 'e3c7fdd8-b1fc-4e51-85ae-bb276e075611',
                 },
               ],
-              amountInFiat: amount,
             },
-          }, // payload
-          null, // integrationId (if you have no integrationId, set this to null)
-          'Wallet', // providerType (use the correct providerType or 'CEX')
+          }, // Transfer payload
+          '6132432e-d59c-4555-9844-cea0ce600ba3',
+          'Wallet',
           'transfer'
         );
 

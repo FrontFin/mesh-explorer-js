@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 const userId = process.env.NEXT_PUBLIC_USER_ID;
 
 export const getUserId = (brokerType) => {
@@ -36,8 +35,8 @@ export const getUserId = (brokerType) => {
       return `public${userId}`;
     case 'etoro':
       return `etoro${userId}`;
-    case 'alpaca':
-      return `alpaca${userId}`;
+    case 'acorns':
+      return `acorns${userId}`;
     default:
       return '000000007';
   }

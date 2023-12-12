@@ -38,7 +38,7 @@ export const getCatalogLink = async (
   );
   let address;
   if (payload) {
-    address = payload.transferOptions.toAddresses[0].address;
+    address = payload?.transferOptions?.toAddresses[0]?.address;
   }
   const fetchOptions = {
     method: 'POST',

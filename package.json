@@ -12,7 +12,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@front-finance/api": "^1.1.7",
-    "@front-finance/link": "^1.1.7",
+    "@front-finance/link": "^1.1.9",
     "@mui/icons-material": "^5.14.7",
     "@mui/material": "^5.14.14",
     "autoprefixer": "10.4.15",

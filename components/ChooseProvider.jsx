@@ -27,6 +27,13 @@ import {
   Box,
 } from '@mui/material';
 
+const getCatalogValues = (integrationId, providerType) => {
+  return {
+    integrationId,
+    providerType,
+  };
+};
+
 const ChooseProvider = ({
   setCatalogLink,
   brokerType = 'coinbase',
@@ -86,6 +93,13 @@ const ChooseProvider = ({
     setProviderType(value);
   };
 
+  const getCatalogValues = () => {
+    return {
+      integrationId,
+      providerType,
+    };
+  };
+
   const handleExchangeType = (value) => {
     setBrokerType(value);
     setIntegrationId('');
@@ -104,6 +118,7 @@ const ChooseProvider = ({
 
   const handleClick = async () => {
     setLoading(true);
+
     await getCatalogLink(
       brokerType,
       setCatalogLink,
@@ -207,3 +222,5 @@ ChooseProvider.propTypes = {
   setLinkAnother: PropTypes?.func,
 };
 export default ChooseProvider;
+
+export { getCatalogValues };

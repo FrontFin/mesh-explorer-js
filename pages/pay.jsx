@@ -17,7 +17,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Header from '../components/Header';
-import ChooseProvider from 'components/ChooseProvider';
+import ChooseProvider, { getCatalogValues } from 'components/ChooseProvider';
 import { getCatalogLink } from 'utils/getCatalogLink';
 import MeshModal from '../components/MeshModal';
 
@@ -96,6 +96,8 @@ const PayPage = () => {
   };
 
   const handleClick = async () => {
+    const catalogValues = getCatalogValues();
+    console.log('cat', catalogValues);
     await getCatalogLink(
       brokerType,
       setCatalogLink,
@@ -117,7 +119,10 @@ const PayPage = () => {
           ],
           amountInFiat: 10,
         },
-      }
+      },
+      catalogValues.integrationId,
+      catalogValues.providerType,
+      'authorization'
     );
   };
 

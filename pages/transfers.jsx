@@ -19,6 +19,7 @@ import MeshModal from '../components/MeshModal';
 import { useRouter } from 'next/router';
 import Header from '../components/Header';
 import { getCatalogLink } from 'utils/getCatalogLink';
+import { getCatalogValues } from 'components/ChooseProvider';
 
 import {
   Button,
@@ -115,13 +116,17 @@ const TransferPage = () => {
   };
 
   const handleClick = async () => {
+    const catalogValues = getCatalogValues();
     setLoading(true);
     await getCatalogLink(
       selectedType,
       setCatalogLink,
       setOpenMeshModal,
       setErrorMessage,
-      payload
+      payload,
+      catalogValues.integrationId,
+      catalogValues.providerType,
+      'authorization'
     );
   };
 

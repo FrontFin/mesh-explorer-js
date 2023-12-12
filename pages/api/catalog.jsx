@@ -21,7 +21,14 @@ export default async function handler(req, res) {
   const { transferOptions, amountInFiat } = req.body;
   const { authModal, accessToken } = req.query;
 
-  console.log('hit next link api, ', authModal, transferOptions, BrokerType);
+  console.log(
+    'hit next link api, ',
+    'intId: ',
+    integrationId,
+    authModal,
+    transferOptions,
+    BrokerType
+  );
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -34,11 +41,11 @@ export default async function handler(req, res) {
 
   if (BrokerType && BrokerType !== 'deFiWallet') {
     bodyObject.BrokerType = BrokerType;
-  } else {
+  } else if (typeof integrationId !== 'undefined') {
     bodyObject.integrationId = integrationId;
   }
-
   if (transferOptions && Object.keys(transferOptions).length > 0) {
+    console.log('hit xfer options');
     bodyObject.transferOptions = transferOptions;
   }
   if (amountInFiat) bodyObject.amountInFiat = amountInFiat;
