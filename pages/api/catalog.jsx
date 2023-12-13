@@ -19,16 +19,7 @@ export default async function handler(req, res) {
   const { PROD_API_KEY, MESH_API_URL, CLIENT_ID } = process.env;
   const { symbol, BrokerType, UserId, integrationId } = req.query;
   const { transferOptions, amountInFiat } = req.body;
-  const { authModal, accessToken } = req.query;
-
-  console.log(
-    'hit next link api, ',
-    'intId: ',
-    integrationId,
-    authModal,
-    transferOptions,
-    BrokerType
-  );
+  const { accessToken } = req.query;
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -61,7 +52,6 @@ export default async function handler(req, res) {
     },
   });
 
-  console.log('body options', bodyObject);
   try {
     const getCatalogLink =
       await api.managedAccountAuthentication.v1LinktokenCreate(bodyObject);
