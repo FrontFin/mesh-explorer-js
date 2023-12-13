@@ -9,7 +9,6 @@ export const handleSuccess = () => {
 };
 
 export const handleTransferFinished = () => {
-  console.log('transfer finished');
   const router = useRouter();
   router.push('/');
 };
