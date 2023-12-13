@@ -208,6 +208,7 @@ const Step4 = ({
     link={catalogLink}
     onExit={handleExit}
     authData={brokerAuthData}
+    transferFinished={handleTransferFinished}
   />
 );
 

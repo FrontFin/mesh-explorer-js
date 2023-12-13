@@ -36,7 +36,6 @@ export default async function handler(req, res) {
     bodyObject.integrationId = integrationId;
   }
   if (transferOptions && Object.keys(transferOptions).length > 0) {
-    console.log('hit xfer options');
     bodyObject.transferOptions = transferOptions;
   }
   if (amountInFiat) bodyObject.amountInFiat = amountInFiat;
