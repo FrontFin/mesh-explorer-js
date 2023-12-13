@@ -97,7 +97,6 @@ const PayPage = () => {
 
   const handleClick = async () => {
     const catalogValues = getCatalogValues();
-    console.log('cat', catalogValues);
     await getCatalogLink(
       brokerType,
       setCatalogLink,

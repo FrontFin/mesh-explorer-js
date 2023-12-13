@@ -113,7 +113,6 @@ const ChooseProvider = ({
       (integration) => integration.name === selectedValue
     );
     setIntegrationId(selectedIntegration.deFiWalletData.id);
-    console.log('integration Id, ', integrationId);
   };
 
   const handleClick = async () => {

@@ -28,14 +28,6 @@ export const getCatalogLink = async (
 ) => {
   const UserId = getUserId(brokerType);
 
-  console.log(
-    'brokerType,',
-    brokerType,
-    payload,
-    'payload',
-    integrationId,
-    'integrationId'
-  );
   let address;
   if (payload) {
     address = payload?.transferOptions?.toAddresses[0]?.address;
@@ -50,31 +42,23 @@ export const getCatalogLink = async (
     fetchOptions.body = JSON.stringify(payload);
   }
 
-  console.log('fetch options', fetchOptions);
   try {
     let link;
     if (type === 'authorization') {
       if (integrationId) {
-        console.log('load by defiWallet');
         link = await fetch(
           `/api/catalog?UserId=${UserId}&integrationId=${integrationId}&authModal=true`,
           fetchOptions
         );
       } else if (brokerType && providerType !== 'Full Catalogue') {
-        console.log('load by specific provider CEX');
-
         link = await fetch(
           `/api/catalog?UserId=${UserId}&BrokerType=${brokerType}&authModal=true`,
           fetchOptions
         );
       } else {
-        console.log('load by full catalogue');
-
         link = await fetch(`/api/catalog?UserId=${UserId}`, fetchOptions);
       }
     } else if (type === 'transfer') {
-      console.log('load by transfer only');
-
       link = await fetch(
         `/api/catalog?UserId=${UserId}&BrokerType=${brokerType}&authModal=false&address=${address}`,
         fetchOptions
@@ -82,11 +66,9 @@ export const getCatalogLink = async (
     } else {
       return;
     }
-    console.log('log fetch, ', link, fetchOptions);
 
     const response = await link.json();
     if (response) {
-      console.log('log response, ', response);
       setCatalogLink(response.content.linkToken);
       setOpenMeshModal(true);
     }
