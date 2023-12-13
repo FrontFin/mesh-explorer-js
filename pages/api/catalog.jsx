@@ -19,6 +19,7 @@ export default async function handler(req, res) {
   const { PROD_API_KEY, MESH_API_URL, CLIENT_ID } = process.env;
   const { symbol, BrokerType, UserId, integrationId } = req.query;
   const { transferOptions, amountInFiat } = req.body;
+  const { accessToken } = req.query;
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -29,17 +30,18 @@ export default async function handler(req, res) {
     RestrictMultipleAccounts: true,
   };
 
-  if (BrokerType) {
+  if (BrokerType && BrokerType !== 'deFiWallet') {
     bodyObject.BrokerType = BrokerType;
-  } else {
+  } else if (typeof integrationId !== 'undefined') {
     bodyObject.integrationId = integrationId;
   }
-
   if (transferOptions && Object.keys(transferOptions).length > 0) {
+    console.log('hit xfer options');
     bodyObject.transferOptions = transferOptions;
   }
   if (amountInFiat) bodyObject.amountInFiat = amountInFiat;
   if (symbol) bodyObject.symbol = symbol;
+  if (accessToken) bodyObject.accessToken = accessToken;
 
   const api = new FrontApi({
     baseURL: MESH_API_URL,

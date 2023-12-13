@@ -23,11 +23,15 @@ export const getCatalogLink = async (
   setErrorMessage = () => {},
   payload = null,
   integrationId = null,
-  providerType = 'CEX'
-
+  providerType = 'CEX',
+  type = 'authorizaton'
 ) => {
   const UserId = getUserId(brokerType);
 
+  let address;
+  if (payload) {
+    address = payload?.transferOptions?.toAddresses[0]?.address;
+  }
   const fetchOptions = {
     method: 'POST',
     headers: {
@@ -40,22 +44,28 @@ export const getCatalogLink = async (
 
   try {
     let link;
-    if (integrationId) {
-       link = await fetch(
-        `/api/catalog?UserId=${UserId}&integrationId=${integrationId}`,
+    if (type === 'authorization') {
+      if (integrationId) {
+        link = await fetch(
+          `/api/catalog?UserId=${UserId}&integrationId=${integrationId}&authModal=true`,
+          fetchOptions
+        );
+      } else if (brokerType && providerType !== 'Full Catalogue') {
+        link = await fetch(
+          `/api/catalog?UserId=${UserId}&BrokerType=${brokerType}&authModal=true`,
+          fetchOptions
+        );
+      } else {
+        link = await fetch(`/api/catalog?UserId=${UserId}`, fetchOptions);
+      }
+    } else if (type === 'transfer') {
+      link = await fetch(
+        `/api/catalog?UserId=${UserId}&BrokerType=${brokerType}&authModal=false&address=${address}`,
         fetchOptions
       );
-    } else if (brokerType && providerType !== 'Full Catalogue') {
-       link = await fetch(
-        `/api/catalog?UserId=${UserId}&BrokerType=${brokerType}`,
-        fetchOptions
-      )
     } else {
-       link = await fetch(
-        `/api/catalog?UserId=${UserId}`,
-        fetchOptions
-      )
-    };
+      return;
+    }
 
     const response = await link.json();
     if (response) {
@@ -63,6 +73,7 @@ export const getCatalogLink = async (
       setOpenMeshModal(true);
     }
   } catch (error) {
+    console.log(`Something went wrong: ${error.message}`);
     setErrorMessage(`Something went wrong: ${error.message}`);
   }
 };

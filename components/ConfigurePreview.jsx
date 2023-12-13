@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -32,6 +31,9 @@ const ConfigurePreviewForm = ({
   toAuthData,
   depositAddress,
   handleInputChange,
+  setAmount,
+  amount,
+  symbol,
 }) => {
   const theme = useTheme();
 
@@ -44,7 +46,7 @@ const ConfigurePreviewForm = ({
               variant="h5"
               sx={{ mb: 1, color: theme.palette.secondary.main }}
             >
-              Sending From: {brokerAuthData?.accessToken?.brokerType}
+              Sending {symbol} From: {brokerAuthData?.accessToken?.brokerType}
             </Typography>
             <TextField
               required
@@ -99,13 +101,13 @@ const ConfigurePreviewForm = ({
           </FormControl>
           <FormControl fullWidth sx={{ mb: 2 }}>
             <Typography variant="h6" sx={{ mb: 1 }}>
-              Transfer Details:{' '}
+              Transfer Details:
             </Typography>
             <TextField
               required
               label="Amount"
-              value={formValues.amount}
-              onChange={(e) => handleInputChange('amount', e.target.value)}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
             />
           </FormControl>
 
@@ -135,6 +137,9 @@ ConfigurePreviewForm.propTypes = {
   handleInputChange: PropTypes.func.isRequired,
   errorMessage: PropTypes.string.isRequired,
   networkId: PropTypes.string.isRequired,
+  amount: PropTypes.string.isRequired,
+  setAmount: PropTypes.func.isRequired,
+  symbol: PropTypes.string.isRequired,
 };
 
 export default ConfigurePreviewForm;

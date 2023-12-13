@@ -66,7 +66,6 @@ const TradePreviewModal = ({
         setLoadingExecution(false);
         setTradeStage(1);
         const errorResponse = await executeTrade.json();
-        console.log(errorResponse);
         alert(`Trade Failed: ${errorResponse.error}`);
         return;
       }

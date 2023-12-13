@@ -72,19 +72,17 @@ const GetDepositDetails = ({
   }, [formValues.symbol, integrations, toAuthData]);
 
   const getNetworkNamesBySymbol = (selectedSymbol) => {
-    const brokerType = toAuthData?.accessToken?.brokerType; // Get the broker type from toAuthData
+    const brokerType = toAuthData?.accessToken?.brokerType;
     const supportedChains = new Set();
 
-    // Filter integrations first by brokerType
     const relevantIntegrations = integrations.filter(
       (integration) => integration.type === brokerType
     );
 
-    // Now filter the networks within those integrations for the selected symbol
     relevantIntegrations.forEach((integration) => {
       integration.networks.forEach((network) => {
         if (network.supportedTokens.includes(selectedSymbol)) {
-          supportedChains.add(network.name); // Use the actual network name, not lowercased
+          supportedChains.add(network.name.toLowerCase());
         }
       });
     });
