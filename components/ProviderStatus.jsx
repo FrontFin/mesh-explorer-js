@@ -101,7 +101,7 @@ function StatusDashboard({ page, setPage }) {
                   </TableCell>
 
                   <TableCell>{status?.isUp ? 'Up' : 'Down'}</TableCell>
-                  <TableCell>{status?.supportedProducts.join(', ')}</TableCell>
+                  <TableCell>{status?.supportedProducts?.join(', ')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -48,7 +48,6 @@ const MeshModal = ({
       authData.accessToken.accountTokens &&
       authData.accessToken.accountTokens.length > 0
     ) {
-      console.log('logged in already');
       connectionOptions.accessTokens = [
         {
           accountId: authData.accessToken.accountTokens[0].account.accountId,
@@ -59,7 +58,6 @@ const MeshModal = ({
           brokerName: authData.accessToken.brokerName,
         },
       ];
-      console.log('connection options, ', connectionOptions);
     } else {
       console.log('No access tokens found in authData.');
     }

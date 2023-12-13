@@ -105,6 +105,7 @@ const PayPage = () => {
       setErrorMessage,
       {
         transferOptions: {
+          clientFee: 1,
           toAddresses: [
             {
               symbol: 'USDC',
