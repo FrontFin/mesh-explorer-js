@@ -104,7 +104,8 @@ const PayPage = () => {
       setErrorMessage,
       {
         transferOptions: {
-          clientFee: 1,
+          amountInFiat: 10,
+          clientFee: 0.03, //percentage of amount in fiat
           toAddresses: [
             {
               symbol: 'USDC',
@@ -117,7 +118,6 @@ const PayPage = () => {
               networkId: '0291810a-5947-424d-9a59-e88bb33e999d', // SOLANA network id
             },
           ],
-          amountInFiat: 10,
         },
       },
       catalogValues.integrationId,

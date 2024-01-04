@@ -181,7 +181,7 @@ const ProviderDetails = ({ existingAuthData, setExistingAuthData }) => {
     const payload = {
       type: authData.accessToken.brokerType,
       refreshToken: authData.accessToken.accountTokens[0].refreshToken,
-      createNewRefreshToken: true,
+      createNewRefreshToken: false,
     };
 
     try {
@@ -498,7 +498,7 @@ const ProviderDetails = ({ existingAuthData, setExistingAuthData }) => {
                 <EquitiesTradeModal
                   open={openEquitiesModal}
                   buyingPower={
-                    balance[data?.accessToken?.brokerName]?.content.balances[0]
+                    balance[data?.accessToken?.brokerName]?.content?.balances[0]
                       ?.buyingPower
                   }
                   onClose={() => {

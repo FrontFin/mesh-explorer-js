@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 export const disconnect = async (payload = null) => {
   try {
     const disconnect = await fetch('/api/disconnect', {
