@@ -47,7 +47,7 @@ const PayPage = () => {
 
   const productInitialState = {
     name: 'Front NFT',
-    price: '10 USDC',
+    price: '10 USD',
     description: 'Exotic Front NFT',
     imageUrl:
       'https://mma.prnewswire.com/media/1334250/Front_Finance_Logo.jpg?p=facebook',
