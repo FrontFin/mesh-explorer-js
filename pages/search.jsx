@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from 'components/Header';
 import {
+  CircularProgress,
   TextField,
   Button,
   Box,
@@ -170,45 +171,59 @@ const SearchForm = () => {
           </Box>
         </Paper>
       </Box>
-      {showTransfersTable && !loadingTransfers && (
-        <TableContainer component={Paper}>
-          <Table aria-label="Transfers Table">
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Client Transaction ID</TableCell>
-                <TableCell>User ID</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Amount in Fiat</TableCell>
-                <TableCell>Symbol</TableCell>
-                <TableCell>Network Name</TableCell>
-                <TableCell>Created Timestamp</TableCell>
-                <TableCell>From</TableCell>
-                <TableCell>Hash</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {transfers.map((transfer) => (
-                <TableRow key={transfer.id}>
-                  <TableCell>{transfer.id}</TableCell>
-                  <TableCell>{transfer.clientTransactionId}</TableCell>
-                  <TableCell>{transfer.userId}</TableCell>
-                  <TableCell>{transfer.status}</TableCell>
-                  <TableCell>{transfer.amountInFiat}</TableCell>
-                  <TableCell>{transfer.symbol}</TableCell>
-                  <TableCell>{transfer.networkName}</TableCell>
-                  <TableCell>
-                    {new Date(
-                      transfer.createdTimestamp * 1000
-                    ).toLocaleString()}
-                  </TableCell>
-                  <TableCell>{transfer.from.name}</TableCell>
-                  <TableCell>{transfer.hash}</TableCell>
+      {loadingTransfers ? (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            mt: 5,
+          }}
+        >
+          <CircularProgress />
+          <Typography sx={{ mt: 2 }}>Loading Transfers</Typography>
+        </Box>
+      ) : (
+        showTransfersTable && (
+          <TableContainer component={Paper}>
+            <Table aria-label="Transfers Table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Client Transaction ID</TableCell>
+                  <TableCell>User ID</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Amount in Fiat</TableCell>
+                  <TableCell>Symbol</TableCell>
+                  <TableCell>Network Name</TableCell>
+                  <TableCell>Created Timestamp</TableCell>
+                  <TableCell>From</TableCell>
+                  <TableCell>Hash</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {transfers.map((transfer) => (
+                  <TableRow key={transfer.id}>
+                    <TableCell>{transfer.id}</TableCell>
+                    <TableCell>{transfer.clientTransactionId}</TableCell>
+                    <TableCell>{transfer.userId}</TableCell>
+                    <TableCell>{transfer.status}</TableCell>
+                    <TableCell>{transfer.amountInFiat}</TableCell>
+                    <TableCell>{transfer.symbol}</TableCell>
+                    <TableCell>{transfer.networkName}</TableCell>
+                    <TableCell>
+                      {new Date(
+                        transfer.createdTimestamp * 1000
+                      ).toLocaleString()}
+                    </TableCell>
+                    <TableCell>{transfer.from.name}</TableCell>
+                    <TableCell>{transfer.hash}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )
       )}
     </div>
   );
