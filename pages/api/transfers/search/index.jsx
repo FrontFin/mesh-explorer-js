@@ -16,13 +16,21 @@
 
 export default async function handler(req, res) {
   const { PROD_API_KEY, MESH_API_URL, CLIENT_ID } = process.env;
-  const { offset, descendingOrder, count, userId, fromTimestamp, toTimestamp } =
-    req.query;
+  const {
+    offset,
+    descendingOrder,
+    count,
+    userId,
+    fromTimestamp,
+    toTimestamp,
+    id,
+  } = req.query;
 
   console.log(req.query);
   const queryParams = new URLSearchParams();
   if (userId !== undefined) queryParams.append('userId', userId);
   if (count !== undefined) queryParams.append('count', count);
+  if (id !== undefined) queryParams.append('id', id);
   if (fromTimestamp !== 'undefined')
     queryParams.append('fromTimestamp', fromTimestamp);
   if (toTimestamp !== 'undefined')

@@ -34,8 +34,6 @@ const SearchForm = () => {
     descendingOrder: false,
   });
 
-  const currentDate = new Date();
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSearchParams((prevState) => ({
@@ -66,7 +64,7 @@ const SearchForm = () => {
     console.log(searchParams);
     try {
       const response = await fetch(
-        `/api/transfers/search?count=${searchParams.count}&offset=${searchParams.offset}&descendingOrder=${searchParams.descendingOrder}&userId=${searchParams.userId}&fromTimestamp=${searchParams.fromTimestamp}&toTimestamp=${searchParams.toTimestamp}`
+        `/api/transfers/search?count=${searchParams.count}&offset=${searchParams.offset}&descendingOrder=${searchParams.descendingOrder}&userId=${searchParams.userId}&id=${searchParams.id}&fromTimestamp=${searchParams.fromTimestamp}&toTimestamp=${searchParams.toTimestamp}`
       );
 
       if (!response.ok) {
@@ -79,11 +77,10 @@ const SearchForm = () => {
       if (responseData && responseData.length > 0) {
         setShowTransfersTable(true);
       } else {
-        console.log('No transfers found for the given search criteria.');
+        alert('No transfers found for the given search criteria.');
       }
     } catch (error) {
       console.error('Transfers response error:', error);
-      // Handle error (e.g., show error message to the user)
     } finally {
       setLoadingTransfers(false);
     }
@@ -118,42 +115,56 @@ const SearchForm = () => {
               value={searchParams.userId}
               onChange={handleChange}
             />
+            <TextField
+              label="Mesh txn Id"
+              name="id"
+              value={searchParams.id}
+              onChange={handleChange}
+            />
 
-            <TextField
-              label="Count"
-              name="count"
-              value={searchParams.count}
-              onChange={handleChange}
-              type="number"
-            />
-            <TextField
-              label="Offset"
-              name="offset"
-              value={searchParams.offset}
-              onChange={handleChange}
-              type="number"
-            />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="From"
-                value={fromDate}
-                onChange={(date) => {
-                  setFromDate(date);
-                  handleDateChange('fromTimestamp', date);
-                }}
-                renderInput={(params) => <TextField {...params} />}
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                label="Count"
+                name="count"
+                value={searchParams.count}
+                onChange={handleChange}
+                type="number"
+                sx={{ flexGrow: 1 }}
               />
-              <DatePicker
-                label="To"
-                value={toDate}
-                maxDate={currentDate}
-                onChange={(date) => {
-                  setToDate(date);
-                  handleDateChange('toTimestamp', date);
-                }}
-                renderInput={(params) => <TextField {...params} />}
+              <TextField
+                label="Offset"
+                name="offset"
+                value={searchParams.offset}
+                onChange={handleChange}
+                type="number"
+                sx={{ flexGrow: 1 }}
               />
-            </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="From"
+                  value={fromDate}
+                  onChange={(date) => {
+                    setFromDate(date);
+                    handleDateChange('fromTimestamp', date);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} sx={{ flexGrow: 1 }} />
+                  )}
+                />
+                <DatePicker
+                  label="To"
+                  value={toDate}
+                  maxDate={new Date()}
+                  onChange={(date) => {
+                    setToDate(date);
+                    handleDateChange('toTimestamp', date);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} sx={{ flexGrow: 1 }} />
+                  )}
+                />
+              </LocalizationProvider>
+            </Box>
             <FormControlLabel
               control={
                 <Checkbox
@@ -189,14 +200,15 @@ const SearchForm = () => {
             <Table aria-label="Transfers Table">
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Client Transaction ID</TableCell>
+                  <TableCell>Mesh txn Id</TableCell>
+                  <TableCell>Provider txn Id</TableCell>
+                  <TableCell>Client txn Id</TableCell>
                   <TableCell>User ID</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Amount in Fiat</TableCell>
                   <TableCell>Symbol</TableCell>
-                  <TableCell>Network Name</TableCell>
-                  <TableCell>Created Timestamp</TableCell>
+                  <TableCell>Network</TableCell>
+                  <TableCell>Created</TableCell>
                   <TableCell>From</TableCell>
                   <TableCell>Hash</TableCell>
                 </TableRow>
@@ -205,6 +217,7 @@ const SearchForm = () => {
                 {transfers.map((transfer) => (
                   <TableRow key={transfer.id}>
                     <TableCell>{transfer.id}</TableCell>
+                    <TableCell>{transfer.from.id}</TableCell>
                     <TableCell>{transfer.clientTransactionId}</TableCell>
                     <TableCell>{transfer.userId}</TableCell>
                     <TableCell>{transfer.status}</TableCell>
