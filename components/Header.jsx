@@ -70,7 +70,7 @@ const Header = ({ setLinkAnother, connectAnotherAccount, authData }) => {
               <Link href="/pay">Pay</Link>
             </MenuItem>
             <MenuItem value="transfers-page">
-              <Link href="/transfers">Transfers</Link>
+              <Link href="/transfers">Transfer</Link>
             </MenuItem>
             <MenuItem value="search-transfers-page">
               <Link href="/search">Search Transfers</Link>
