@@ -38,7 +38,7 @@ function TokensDashboard({ page, setPage }) {
       try {
         setLoadingTokens(true);
 
-        const response = await fetch('/api/status');
+        const response = await fetch('/api/tokens');
 
         if (!response.ok) {
           throw new Error('Failed to fetch Tokens');
@@ -46,7 +46,7 @@ function TokensDashboard({ page, setPage }) {
 
         const data = await response.json();
 
-        setTokens(data.content);
+        setTokens(data.content.tokens);
       } catch (error) {
         console.log('error', error);
       } finally {
@@ -87,21 +87,22 @@ function TokensDashboard({ page, setPage }) {
             <TableBody>
               {currentPageTokens.map((tokens, index) => (
                 <TableRow
-                  key={tokens?.type + '-' + index}
+                  key={tokens?.token + '-' + index}
                   sx={{
                     '&:last-child td, &:last-child th': { border: 0 },
                     backgroundColor:
                       index % 2 ? 'rgba(0, 0, 0, 0.04)' : 'inherit',
                   }}
                 >
+                  <TableCell>{tokens?.token}</TableCell>
+
                   <TableCell>
-                    {tokens?.deFiWalletData?.name
-                      ? tokens.deFiWalletData.name
-                      : tokens.type}
+                    {tokens?.networks.map((network) => network.name).join(', ')}
                   </TableCell>
 
-                  <TableCell>{tokens?.isUp ? 'Up' : 'Down'}</TableCell>
-                  <TableCell>{tokens?.supportedProducts?.join(', ')}</TableCell>
+                  <TableCell>
+                    {tokens?.supportedIntegrations?.join(', ')}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -140,7 +141,11 @@ function TokensDashboard({ page, setPage }) {
           Show Tokens Table
         </Button>
       ) : (
-        renderTable(tokens, ['Provider', 'Tokens', 'Supported Products'])
+        renderTable(tokens, [
+          'Token Name',
+          'Supported Networks',
+          'Supported Integrations',
+        ])
       )}
     </div>
   );
