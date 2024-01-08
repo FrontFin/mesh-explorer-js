@@ -73,6 +73,7 @@ export default async function handler(req, res) {
     payload.price = parseFloat(req.query.price);
   }
   try {
+    console.log('payload', payload);
     const tradeExecution = await api.transactions.v1TransactionsCreate(
       req.query.side,
       payload

@@ -309,20 +309,24 @@ const TransferModal = ({ open, onClose, brokerAuthData, existingAuthData }) => {
 
   useEffect(() => {
     if (existingAuthData.length > 1) {
-      const destinationAuthData = existingAuthData.find(
+      const differentAccessTokenObj = existingAuthData.find(
         (authData) =>
-          authData.accessToken.brokerType !==
-          brokerAuthData.accessToken.brokerType
+          authData.accessToken.accountTokens[0].accessToken !==
+          brokerAuthData.accessToken.accountTokens[0].accessToken
       );
-      if (destinationAuthData) {
-        setToAuthData(destinationAuthData);
+
+      if (differentAccessTokenObj) {
+        setToAuthData(differentAccessTokenObj);
       } else {
-        console.log('No matching object found.');
+        console.log(
+          'No object with a different access token found.',
+          brokerAuthData
+        );
       }
     } else {
-      console.log('only one object');
+      console.log('Insufficient objects in existingAuthData.');
     }
-  }, [existingAuthData, brokerAuthData, toAuthData]);
+  }, [existingAuthData, brokerAuthData]);
 
   const handleGetDepositAddress = async () => {
     setLoading(true);

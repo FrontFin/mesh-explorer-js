@@ -54,7 +54,7 @@ const ChooseProvider = ({
       const response = await defiWallets.json();
       const wallet = response.content
         .filter((item) => item.deFiWalletData)
-        .sort((a, b) => a.name.localeCompare(b.name)); // Sorting step
+        .sort((a, b) => a.name.localeCompare(b.name));
 
       setDefiIntegrations(wallet);
     };
@@ -91,13 +91,6 @@ const ChooseProvider = ({
 
   const handleProviderType = (value) => {
     setProviderType(value);
-  };
-
-  const getCatalogValues = () => {
-    return {
-      integrationId,
-      providerType,
-    };
   };
 
   const handleExchangeType = (value) => {

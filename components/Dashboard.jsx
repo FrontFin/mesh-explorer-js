@@ -22,7 +22,7 @@ import { NetworksContext } from '../context/networksContext';
 import NetworkDashboard from './NetworksTable'; // Assuming you create a NetworkDashboard component
 import IntegrationsDashboard from './IntegrationsTable'; // Assuming you create a IntegrationsDashboard component
 import StatusDashboard from './ProviderStatus'; // Assuming you create a ProviderStatus componentimp
-
+import TokensDashboard from './TokensTable';
 function Dashboard() {
   const {
     loadingNetworks,
@@ -92,6 +92,8 @@ function Dashboard() {
             setPage={setPage}
           />
         );
+      case 3:
+        return <TokensDashboard tab={tab} page={page} setPage={setPage} />;
       default:
         return null;
     }
@@ -103,6 +105,7 @@ function Dashboard() {
         <Tab label="Integrations" />
         <Tab label="Supported Networks" />
         <Tab label="Provider Status" />
+        <Tab label="Tokens" />
       </Tabs>
       {renderTabContent()}
     </div>

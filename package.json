@@ -9,14 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@date-io/date-fns": "^2.17.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@front-finance/api": "^1.1.7",
     "@front-finance/link": "^1.1.9",
     "@mui/icons-material": "^5.14.7",
+    "@mui/lab": "^5.0.0-alpha.159",
     "@mui/material": "^5.14.14",
+    "@mui/x-date-pickers": "^6.18.6",
     "autoprefixer": "10.4.15",
     "cookie": "^0.5.0",
+    "date-fns": "^2.30.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "js-cookie": "^3.0.5",
