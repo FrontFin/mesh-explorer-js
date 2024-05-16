@@ -1,5 +1,5 @@
 /**
- * Copyright 2023-present Mesh Connect, Inc.
+ * Copyright 2024-present Mesh Connect, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,13 @@ export const tradingAllowed = (brokerType, tradingType) => {
         return true;
       } else {
         return false;
+      }
+
+    case 'weBull':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return true;
       }
     case 'public':
       if (tradingType === 'crypto') {

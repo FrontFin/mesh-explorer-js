@@ -1,5 +1,5 @@
 /**
- * Copyright 2023-present Mesh Connect, Inc.
+ * Copyright 2024-present Mesh Connect, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ const PayPage = () => {
       setErrorMessage,
       {
         transferOptions: {
-          amountInFiat: 10,
+          amountInFiat: 200,
           clientFee: 0.03, //percentage of amount in fiat
           toAddresses: [
             {

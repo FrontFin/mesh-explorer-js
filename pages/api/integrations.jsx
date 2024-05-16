@@ -1,5 +1,5 @@
 /**
- * Copyright 2023-present Mesh Connect, Inc.
+ * Copyright 2024-present Mesh Connect, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,6 @@ export default async function handler(req, res) {
       );
     }
     return res.status(200).json(getIntegrations.data);
-    
   } catch (error) {
     res.status(500).json({ error: `Something went wrong: ${error.message}` });
   }
