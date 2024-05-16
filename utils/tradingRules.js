@@ -48,6 +48,13 @@ export const tradingAllowed = (brokerType, tradingType) => {
       } else {
         return false;
       }
+
+    case 'weBull':
+      if (tradingType === 'crypto') {
+        return true;
+      } else {
+        return true;
+      }
     case 'public':
       if (tradingType === 'crypto') {
         return true;

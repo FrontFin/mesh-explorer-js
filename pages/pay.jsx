@@ -104,7 +104,7 @@ const PayPage = () => {
       setErrorMessage,
       {
         transferOptions: {
-          amountInFiat: 10,
+          amountInFiat: 200,
           clientFee: 0.03, //percentage of amount in fiat
           toAddresses: [
             {
