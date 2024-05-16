@@ -1,5 +1,5 @@
 /**
- * Copyright 2023-present Mesh Connect, Inc.
+ * Copyright 2024-present Mesh Connect, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
@@ -23,18 +22,17 @@ import TransactionProvider from 'context/transactionContext';
 import NetworksProvider from 'context/networksContext';
 import IntegrationsProvider from 'context/integrationsContext';
 
-
 // eslint-disable-next-line react/prop-types
 export default function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <NetworksProvider>
         <IntegrationsProvider>
-        <TransferProvider>
-          <TransactionProvider>
-            <Component {...pageProps} />
-          </TransactionProvider>
-        </TransferProvider>
+          <TransferProvider>
+            <TransactionProvider>
+              <Component {...pageProps} />
+            </TransactionProvider>
+          </TransferProvider>
         </IntegrationsProvider>
       </NetworksProvider>
     </ThemeProvider>
