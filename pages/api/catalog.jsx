@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { FrontApi } from '@front-finance/api';
+import { FrontApi } from "@meshconnect/node-api";
 export default async function handler(req, res) {
   const { PROD_API_KEY, MESH_API_URL, CLIENT_ID } = process.env;
   const { symbol, BrokerType, UserId, integrationId } = req.query;
   const { transferOptions, amountInFiat } = req.body;
   const { accessToken } = req.query;
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   const bodyObject = {
@@ -30,13 +30,13 @@ export default async function handler(req, res) {
     RestrictMultipleAccounts: true,
   };
 
-  if (BrokerType && BrokerType !== 'deFiWallet') {
+  if (BrokerType && BrokerType !== "deFiWallet") {
     bodyObject.BrokerType = BrokerType;
-  } else if (typeof integrationId !== 'undefined') {
+  } else if (typeof integrationId !== "undefined") {
     bodyObject.integrationId = integrationId;
   }
   if (transferOptions && Object.keys(transferOptions).length > 0) {
-    console.log('hit xfer options');
+    console.log("hit xfer options");
     bodyObject.transferOptions = transferOptions;
   }
   if (amountInFiat) bodyObject.amountInFiat = amountInFiat;
@@ -46,9 +46,9 @@ export default async function handler(req, res) {
   const api = new FrontApi({
     baseURL: MESH_API_URL,
     headers: {
-      'Content-Type': 'application/json',
-      'X-Client-Id': CLIENT_ID,
-      'X-Client-Secret': PROD_API_KEY,
+      "Content-Type": "application/json",
+      "X-Client-Id": CLIENT_ID,
+      "X-Client-Secret": PROD_API_KEY,
     },
   });
 
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
     }
     return res.status(200).json(getCatalogLink.data);
   } catch (error) {
-    console.error('Error response:', error.response);
+    console.error("Error response:", error.response);
 
     res.status(500).json({
       error: `Something went wrong: ${error.message}`,

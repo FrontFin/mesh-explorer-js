@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import { FrontApi } from '@front-finance/api';
+import { FrontApi } from "@meshconnect/node-api";
 export default async function handler(req, res) {
   const { PROD_API_KEY, MESH_API_URL, CLIENT_ID } = process.env;
 
-  if (req.method !== 'POST') {
+  if (req.method !== "POST") {
     return res
       .status(405)
-      .json({ error: 'Method not allowed. Please use POST method.' });
+      .json({ error: "Method not allowed. Please use POST method." });
   }
 
-  const authToken = req.headers['authtoken'];
+  const authToken = req.headers["authtoken"];
   const { brokerType } = req.query;
 
   const payload = {
@@ -35,9 +35,9 @@ export default async function handler(req, res) {
   const api = new FrontApi({
     baseURL: MESH_API_URL,
     headers: {
-      'Content-Type': 'application/json',
-      'X-Client-Id': CLIENT_ID,
-      'X-Client-Secret': PROD_API_KEY,
+      "Content-Type": "application/json",
+      "X-Client-Id": CLIENT_ID,
+      "X-Client-Secret": PROD_API_KEY,
     },
   });
 

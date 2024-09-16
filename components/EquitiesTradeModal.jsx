@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import TradePreviewModal from './TradePreview';
-import TradeConfirmation from './TradeConfirmation';
+import React, { useState, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import TradePreviewModal from "./TradePreview";
+import TradeConfirmation from "./TradeConfirmation";
 import {
   Card,
   CardContent,
@@ -30,11 +30,11 @@ import {
   Grid,
   TextField,
   FormHelperText,
-} from '@mui/material';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import PropTypes from 'prop-types';
+} from "@mui/material";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import PropTypes from "prop-types";
 
 const EquitiesTradeModal = ({
   open,
@@ -44,18 +44,18 @@ const EquitiesTradeModal = ({
   buyingPower,
 }) => {
   const [brokerDetails, setBrokerDetails] = useState({});
-  const [symbol, setSymbol] = useState('');
+  const [symbol, setSymbol] = useState("");
   const [loadingPreviewDetails, setLoadingPreviewDetails] = useState(false);
-  const [orderType, setOrderType] = useState('marketType');
-  const [side, setSide] = useState('buy');
+  const [orderType, setOrderType] = useState("marketType");
+  const [side, setSide] = useState("buy");
   const [amount, setAmount] = useState(1);
   const [loadingBrokerDetails, setLoadingBrokerDetails] = useState(false);
-  const [timeInForce, setTimeInForce] = useState('');
-  const [paymentSymbol, setPaymentSumbol] = useState('USD');
+  const [timeInForce, setTimeInForce] = useState("");
+  const [paymentSymbol, setPaymentSumbol] = useState("USD");
   const [tradeStage, setTradeStage] = useState(1);
   const [loadingExecution, setLoadingExecution] = useState(false);
   const [dropdownOptions, setDropdownOptions] = useState([]);
-  const [amountType, setAmountType] = useState('quantity');
+  const [amountType, setAmountType] = useState("quantity");
   const [amountIsInPaymentSymbol, setAmountIsInPaymentSymbol] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -69,16 +69,16 @@ const EquitiesTradeModal = ({
         const response = await fetch(
           `/api/transactions/broker/support?brokerType=${brokerType}`,
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               authToken: authToken,
             },
           }
         );
 
         if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
+          throw new Error("Network response was not ok " + response.statusText);
         }
 
         const data = await response.json();
@@ -94,7 +94,7 @@ const EquitiesTradeModal = ({
 
   useEffect(() => {
     if (brokerDetails) {
-      const options = ['marketType', 'limitType', 'stopLossType']
+      const options = ["marketType", "limitType", "stopLossType"]
         .filter((type) => brokerDetails[type]?.supported)
         .map((type) => type);
       setDropdownOptions(options);
@@ -102,7 +102,7 @@ const EquitiesTradeModal = ({
   }, [brokerDetails]);
 
   useEffect(() => {
-    setAmountIsInPaymentSymbol(amountType === 'dollars');
+    setAmountIsInPaymentSymbol(amountType === "qu");
   }, [amountType]);
 
   const getSupportedTimeInForceList = () => {
@@ -123,16 +123,16 @@ const EquitiesTradeModal = ({
 
     let apiURL = `/api/transactions/preview?brokerType=${brokerType}&side=${side}&paymentSymbol=${paymentSymbol}&symbol=${symbol}&orderType=${orderType}&timeInForce=${timeInForce}&amount=${amount}&isCryptoCurrency=false&amountIsInPaymentSymbol=${amountIsInPaymentSymbol}`;
 
-    if (orderType === 'limitType' || orderType === 'stopLossType') {
+    if (orderType === "limitType" || orderType === "stopLossType") {
       apiURL += `&price=${price}`;
     }
     try {
       const getTradePreview = await fetch(apiURL, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           authToken: authToken,
         },
-        method: 'POST',
+        method: "POST",
       });
 
       if (!getTradePreview.ok) {
@@ -145,16 +145,21 @@ const EquitiesTradeModal = ({
       setTradeStage(2);
       setLoadingPreviewDetails(false);
     } catch (error) {
-      console.log('this was the error from Mesh', error);
+      console.log("this was the error from Mesh", error);
     }
   };
 
   const getSupportedAmountTypes = () => {
-    const types = ['quantity'];
+    console.log(
+      "support dollars, ",
+      brokerDetails?.marketType?.supportsPlacingBuyOrdersInPaymentSymbolAmount
+    );
+    const types = ["quantity"];
     if (
       brokerDetails?.marketType?.supportsPlacingBuyOrdersInPaymentSymbolAmount
     ) {
-      types.push('dollars');
+      types.push("dollars");
+      console.log("can buy dollars worth");
     }
     return types;
   };
@@ -182,8 +187,8 @@ const EquitiesTradeModal = ({
               <div>
                 <Card
                   sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
+                    display: "flex",
+                    justifyContent: "flex-start",
                     mt: 2,
                     gap: 2,
                     p: 2,
@@ -236,8 +241,8 @@ const EquitiesTradeModal = ({
                           <MenuItem value="sell">Sell</MenuItem>
                         </Select>
                       </FormControl>
-                      {(orderType === 'limitType' ||
-                        orderType === 'stopLossType') && (
+                      {(orderType === "limitType" ||
+                        orderType === "stopLossType") && (
                         <FormControl fullWidth>
                           <Typography variant="h6">Price</Typography>
                           <TextField

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import React, { useState, createContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, createContext } from "react";
+import PropTypes from "prop-types";
 
 const defaultState = {};
 
@@ -24,7 +24,7 @@ export const TransferContext = createContext(defaultState);
 const TransferProvider = ({ children }) => {
   const [transferDetails, setTransferDetails] = useState([]);
   const [loading, setLoadingTransfers] = useState(true);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [lastXFRBrokerType, setLastXFRBrokerType] = useState(null);
 
   const getTransferDetails = async (payload, brokerType) => {
@@ -32,9 +32,9 @@ const TransferProvider = ({ children }) => {
       setLoadingTransfers(true);
       setLastXFRBrokerType(brokerType);
       const response = await fetch(`/api/transfers/list`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
@@ -43,13 +43,14 @@ const TransferProvider = ({ children }) => {
 
       if (!response.ok) {
         setTransferDetails([]);
-        setMessage(data.error || 'Something went wrong');
+        setMessage(data.error || "Something went wrong");
       }
       if (response && data.content.total === 0) {
-        setMessage('No records found.');
+        setMessage("No records found.");
         setTransferDetails([]);
       } else {
         setTransferDetails(data.content.transfers);
+        console.log("list, ", data);
       }
     } catch (error) {
       setMessage(error);

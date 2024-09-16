@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-import { FrontApi } from '@front-finance/api';
-
+import { FrontApi } from "@meshconnect/node-api";
 export default async function handler(req, res) {
   const { PROD_API_KEY, MESH_API_URL, CLIENT_ID } = process.env;
-  const authToken = req.headers['authtoken'];
+  const authToken = req.headers["authtoken"];
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   const api = new FrontApi({
     baseURL: MESH_API_URL,
     headers: {
-      'Content-Type': 'application/json',
-      'X-Client-Id': CLIENT_ID,
-      'X-Client-Secret': PROD_API_KEY,
+      "Content-Type": "application/json",
+      "X-Client-Id": CLIENT_ID,
+      "X-Client-Secret": PROD_API_KEY,
     },
   });
 
   const getOrderType = (typeString) => {
-    if (typeString && typeString.endsWith('Type')) {
+    if (typeString && typeString.endsWith("Type")) {
       return typeString.slice(0, -4);
     }
     return typeString;
@@ -45,33 +44,36 @@ export default async function handler(req, res) {
     type: req.query.brokerType,
     symbol: req.query.symbol,
     paymentSymbol: req.query.paymentSymbol,
-    isCryptoCurrency: req.query.isCryptoCurrency === 'true',
+    isCryptoCurrency: req.query.isCryptoCurrency === "true",
     orderType: getOrderType(req.query.orderType),
     timeInForce: req.query.timeInForce,
   };
 
-  if (req.query.amountIsInPaymentSymbol === 'true') {
+  console.log("preview in payment sybmol", req.query.amountIsInPaymentSymbol);
+  if (req.query.amountIsInPaymentSymbol === "true") {
     payload.amountInPaymentSymbol = parseFloat(req.query.amount);
     payload.amountIsInPaymentSymbol = true;
-  } else if (payload.type === 'coinbase') {
-    payload.amountInPaymentSymbol = parseFloat(req.query.amount);
-    payload.amountIsInPaymentSymbol = true;
+
+    //  else if (payload.type === "coinbase") {
+    //   payload.amountInPaymentSymbol = parseFloat(req.query.amount);
+    //   payload.amountIsInPaymentSymbol = true;
   } else {
     payload.amount = parseFloat(req.query.amount);
     payload.amountIsInPaymentSymbol = false;
   }
 
-  if (req.query.price && req.query.price.trim() !== '') {
+  if (req.query.price && req.query.price.trim() !== "") {
     payload = { ...payload, price: parseFloat(req.query.price) };
   }
 
   try {
+    console.log("payload", payload);
     const tradePreview = await api.transactions.v1TransactionsPreviewCreate(
       req.query.side,
       payload
     );
 
-    if (tradePreview.status !== 200 || tradePreview.data.status !== 'ok') {
+    if (tradePreview.status !== 200 || tradePreview.data.status !== "ok") {
       throw new Error(
         `Failed to fetch trade Preview: ${JSON.stringify(tradePreview.data)}`
       );

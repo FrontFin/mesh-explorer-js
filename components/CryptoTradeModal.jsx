@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import TradePreviewModal from './TradePreview';
-import TradeConfirmation from './TradeConfirmation';
+import React, { useState, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import TradePreviewModal from "./TradePreview";
+import TradeConfirmation from "./TradeConfirmation";
 import {
   Card,
   CardContent,
@@ -30,11 +30,11 @@ import {
   Grid,
   TextField,
   FormHelperText,
-} from '@mui/material';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import PropTypes from 'prop-types';
+} from "@mui/material";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import PropTypes from "prop-types";
 
 const CryptoTradeModal = ({
   open,
@@ -44,20 +44,20 @@ const CryptoTradeModal = ({
   buyingPower,
 }) => {
   const [brokerDetails, setBrokerDetails] = useState({});
-  const [symbol, setSymbol] = useState('');
+  const [symbol, setSymbol] = useState("");
   const [loadingPreviewDetails, setLoadingPreviewDetails] = useState(false);
   const [assets, setAssets] = useState([]);
-  const [orderType, setOrderType] = useState('marketType');
-  const [side, setSide] = useState('buy');
+  const [orderType, setOrderType] = useState("marketType");
+  const [side, setSide] = useState("buy");
   const [amount, setAmount] = useState(1);
   const [loadingBrokerDetails, setLoadingBrokerDetails] = useState(false);
-  const [timeInForce, setTimeInForce] = useState('');
-  const [paymentSymbol, setPaymentSumbol] = useState('USD');
+  const [timeInForce, setTimeInForce] = useState("");
+  const [paymentSymbol, setPaymentSumbol] = useState("USD");
   const [tradeStage, setTradeStage] = useState(1);
   const [loadingExecution, setLoadingExecution] = useState(false);
   const [tradeResponse, setTradeResponse] = useState({});
   const [price, setPrice] = useState(1);
-  const [amountType, setAmountType] = useState('quantity');
+  const [amountType, setAmountType] = useState("quantity");
   const [amountIsInPaymentSymbol, setAmountIsInPaymentSymbol] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -68,16 +68,16 @@ const CryptoTradeModal = ({
         const response = await fetch(
           `/api/transactions/broker/support?brokerType=${brokerType}`,
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               authToken: authToken,
             },
           }
         );
 
         if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
+          throw new Error("Network response was not ok " + response.statusText);
         }
 
         const data = await response.json();
@@ -97,18 +97,22 @@ const CryptoTradeModal = ({
   if (brokerDetails) {
     const { cryptocurrencyOrders } = brokerDetails;
     if (cryptocurrencyOrders?.marketType.supported) {
-      dropdownOptions.push('marketType');
+      dropdownOptions.push("marketType");
     }
     if (cryptocurrencyOrders?.limitType.supported) {
-      dropdownOptions.push('limitType');
+      dropdownOptions.push("limitType");
     }
     if (cryptocurrencyOrders?.stopLossType.supported) {
-      dropdownOptions.push('stopLossType');
+      dropdownOptions.push("stopLossType");
     }
   }
 
   useEffect(() => {
-    setAmountIsInPaymentSymbol(amountType === 'dollars');
+    if (amountType === "dollars") {
+      setAmountIsInPaymentSymbol(true);
+    } else {
+      setAmountIsInPaymentSymbol(false);
+    }
   }, [amountType]);
 
   const getSupportedTimeInForceList = () => {
@@ -133,16 +137,16 @@ const CryptoTradeModal = ({
 
     let apiURL = `/api/transactions/preview?brokerType=${brokerType}&side=${side}&paymentSymbol=${paymentSymbol}&symbol=${symbol}&orderType=${orderType}&timeInForce=${timeInForce}&amount=${amount}&isCryptoCurrency=true&amountIsInPaymentSymbol=${amountIsInPaymentSymbol}`;
 
-    if (orderType === 'limitType' || orderType === 'stopLossType') {
+    if (orderType === "limitType" || orderType === "stopLossType") {
       apiURL += `&price=${price}`;
     }
     try {
       const getTradePreview = await fetch(apiURL, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           authToken: authToken,
         },
-        method: 'POST',
+        method: "POST",
       });
 
       if (!getTradePreview.ok) {
@@ -156,19 +160,32 @@ const CryptoTradeModal = ({
       setTradeStage(2);
       setLoadingPreviewDetails(false);
     } catch (error) {
-      console.log('this was the error from Mesh', error);
+      console.log("this was the error from Mesh", error);
     }
   };
 
   const getSupportedAmountTypes = () => {
-    const types = ['quantity'];
+    const types = [];
+
     if (
-      brokerDetails?.marketType?.supportsPlacingBuyOrdersInPaymentSymbolAmount
+      brokerDetails?.cryptocurrencyOrders?.marketType
+        ?.supportsPlacingBuyOrdersInBaseSymbolAmount
     ) {
-      types.push('dollars');
+      types.push("quantity");
+      console.log("can buy quantity worth");
     }
+
+    if (
+      brokerDetails?.cryptocurrencyOrders?.marketType
+        ?.supportsPlacingBuyOrdersInFiatAmount
+    ) {
+      types.push("dollars");
+      console.log("can buy dollars worth");
+    }
+
     return types;
   };
+
   return (
     <Dialog
       open={open}
@@ -192,8 +209,8 @@ const CryptoTradeModal = ({
               <div>
                 <Card
                   sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
+                    display: "flex",
+                    justifyContent: "flex-start",
                     mt: 2,
                     gap: 2,
                     p: 2,
@@ -252,7 +269,7 @@ const CryptoTradeModal = ({
                           <MenuItem value="sell">Sell</MenuItem>
                         </Select>
                       </FormControl>
-                      {orderType === 'limitType' && (
+                      {orderType === "limitType" && (
                         <FormControl fullWidth>
                           <Typography variant="h6">Price</Typography>
                           <TextField
@@ -356,6 +373,7 @@ const CryptoTradeModal = ({
           loadingExecution={loadingExecution}
           setLoadingExecution={setLoadingExecution}
           setTradeResponse={setTradeResponse}
+          amountIsInPaymentSymbol={amountIsInPaymentSymbol}
         />
       ) : null}
 
